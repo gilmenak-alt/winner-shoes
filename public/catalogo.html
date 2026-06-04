@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Catálogo | Winner Shoes</title>
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#fff;
+      color:#111;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    body.modal-open{
+      overflow:hidden;
+    }
+
+    /* HEADER */
+
+    .top-bar{
+      height:40px;
+      background:#000;
+      color:#fff;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 40px;
+      font-size:13px;
+    }
+
+    .top-links{
+      display:flex;
+      gap:25px;
+    }
+
+    .top-links a:hover{
+      opacity:.7;
+    }
+
+    .header{
+      position:sticky;
+      top:0;
+      z-index:999;
+      background:#fff;
+      border-bottom:1px solid #e5e5e5;
+    }
+
+    .header-container{
+      height:80px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 40px;
+    }
+
+    .logo{
+      font-size:30px;
+      font-weight:bold;
+      letter-spacing:1px;
+    }
+
+    .nav{
+      display:flex;
+      gap:30px;
+      font-weight:600;
+    }
+
+    .nav a{
+      position:relative;
+      padding-bottom:5px;
+    }
+
+    .nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0;
+      height:2px;
+      background:#000;
+      transition:.3s;
+    }
+
+    .nav a:hover::after{
+      width:100%;
+    }
+
+    .tools{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .search-box{
+      background:#f5f5f5;
+      border-radius:30px;
+      padding:10px 18px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .search-box input{
+      border:none;
+      background:none;
+      outline:none;
+      width:180px;
+    }
+
+    .icon-btn{
+      border:none;
+      background:none;
+      font-size:20px;
+      cursor:pointer;
+    }
+
+    /* HERO */
+
+    .catalog-hero{
+      height:450px;
+      background:
+      linear-gradient(rgba(0,0,0,.35),rgba(0,0,0,.35)),
+      url("https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1800&auto=format&fit=crop");
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:center;
+      padding:0 80px;
+      color:#fff;
+    }
+
+    .hero-content h1{
+      font-size:70px;
+      margin-bottom:20px;
+      text-transform:uppercase;
+    }
+
+    .hero-content p{
+      font-size:20px;
+      max-width:600px;
+      line-height:1.5;
+      margin-bottom:25px;
+    }
+
+    .hero-btn{
+      background:#fff;
+      color:#000;
+      padding:14px 35px;
+      border-radius:30px;
+      font-weight:bold;
+      display:inline-block;
+    }
+
+    /* TOOLBAR */
+
+    .toolbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:35px 50px;
+      flex-wrap:wrap;
+      gap:20px;
+    }
+
+    .toolbar-left{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+    .toolbar-right{
+      display:flex;
+      gap:15px;
+    }
+
+    .toolbar button,
+    .toolbar select{
+      border:1px solid #ddd;
+      background:#fff;
+      padding:12px 18px;
+      border-radius:30px;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    /* MAIN */
+
+    .catalog-layout{
+      display:flex;
+      gap:40px;
+      padding:0 50px 80px;
+    }
+
+    /* SIDEBAR */
+
+    .sidebar{
+      width:300px;
+      flex-shrink:0;
+      transition:.3s;
+    }
+
+    .sidebar.hidden{
+      display:none;
+    }
+
+    .filter-box{
+      border-bottom:1px solid #eee;
+      padding:25px 0;
+    }
+
+    .filter-box h3{
+      margin-bottom:18px;
+      font-size:18px;
+    }
+
+    .filter-option{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:14px;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    .filter-option input{
+      width:18px;
+      height:18px;
+      cursor:pointer;
+    }
+
+    /* PRODUCT GRID */
+
+    .product-area{
+      flex:1;
+    }
+
+    .product-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:35px;
+    }
+
+    .product-card{
+      cursor:pointer;
+      transition:.3s;
+    }
+
+    .product-card:hover{
+      transform:translateY(-5px);
+    }
+
+    .product-image{
+      background:#f6f6f6;
+      position:relative;
+      aspect-ratio:1/1;
+      overflow:hidden;
+    }
+
+    .product-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:.5s;
+      position:absolute;
+      top:0;
+      left:0;
+    }
+
+    .product-card:hover .img1{
+      opacity:0;
+    }
+
+    .badge{
+      position:absolute;
+      top:15px;
+      left:15px;
+      background:#fff;
+      padding:6px 12px;
+      border-radius:20px;
+      font-size:12px;
+      font-weight:bold;
+      z-index:10;
+    }
+
+    .product-info{
+      padding-top:18px;
+    }
+
+    .product-info h3{
+      font-size:18px;
+      margin-bottom:8px;
+    }
+
+    .product-info p{
+      color:#777;
+      margin-bottom:6px;
+    }
+
+    .price{
+      margin-top:10px;
+      font-weight:bold;
+      color:#111 !important;
+    }
+
+    .old-price{
+      text-decoration:line-through;
+      color:#999;
+      margin-right:10px;
+      font-weight:normal;
+    }
+
+    .discount-price{
+      color:#d60000;
+    }
+
+    .card-actions{
+      display:flex;
+      gap:10px;
+      margin-top:15px;
+    }
+
+    .card-actions button{
+      flex:1;
+      border:none;
+      padding:12px;
+      border-radius:30px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .btn-cart{
+      background:#000;
+      color:#fff;
+    }
+
+    .btn-fav{
+      background:#f1f1f1;
+    }
+
+    /* LOAD MORE */
+
+    .load-more{
+      display:flex;
+      justify-content:center;
+      margin-top:50px;
+    }
+
+    .load-more button{
+      border:none;
+      background:#000;
+      color:#fff;
+      padding:16px 45px;
+      border-radius:40px;
+      cursor:pointer;
+      font-size:16px;
+    }
+
+    /* MODAL */
+
+    .modal-overlay{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+    }
+
+    .modal-overlay.active{
+      display:flex;
+    }
+
+    .modal{
+      background:#fff;
+      width:420px;
+      border-radius:20px;
+      padding:30px;
+    }
+
+    .modal h2{
+      margin-bottom:20px;
+    }
+
+    .variant-group{
+      margin-bottom:25px;
+    }
+
+    .variant-group h4{
+      margin-bottom:12px;
+    }
+
+    .variant-options{
+      display:flex;
+      flex-wrap:wrap;
+      gap:10px;
+    }
+
+    .variant-options button{
+      min-width:50px;
+      height:45px;
+      border:1px solid #ddd;
+      background:#fff;
+      cursor:pointer;
+      border-radius:10px;
+      font-weight:bold;
+    }
+
+    .variant-options button.active{
+      background:#000;
+      color:#fff;
+      border-color:#000;
+    }
+
+    .modal-actions{
+      display:flex;
+      gap:15px;
+      margin-top:20px;
+    }
+
+    .modal-actions button{
+      flex:1;
+      border:none;
+      padding:14px;
+      border-radius:30px;
+      cursor:pointer;
+      font-weight:bold;
+    }
+
+    .confirm-btn{
+      background:#000;
+      color:#fff;
+    }
+
+    .cancel-btn{
+      background:#eee;
+    }
+
+    /* RESPONSIVE */
+
+    @media(max-width:1300px){
+
+      .product-grid{
+        grid-template-columns:repeat(3,1fr);
+      }
+
+    }
+
+    @media(max-width:950px){
+
+      .catalog-layout{
+        display:block;
+      }
+
+      .sidebar{
+        width:100%;
+        margin-bottom:40px;
+      }
+
+      .product-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media(max-width:700px){
+
+      .nav{
+        display:none;
+      }
+
+      .header-container,
+      .toolbar,
+      .catalog-layout{
+        padding-left:20px;
+        padding-right:20px;
+      }
+
+      .catalog-hero{
+        padding:0 25px;
+        height:350px;
+      }
+
+      .hero-content h1{
+        font-size:45px;
+      }
+
+      .product-grid{
+        grid-template-columns:1fr;
+      }
+
+      .top-bar{
+        padding:0 20px;
+      }
+
+      .search-box input{
+        width:100px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+
+  <div class="top-bar">
+
+    <div>
+      WINNER SHOES
+    </div>
+
+    <div class="top-links">
+      <a href="#">Ayuda</a>
+      <a href="registro.html">Únete</a>
+      <a href="login.html">Iniciar sesión</a>
+    </div>
+
+  </div>
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <div class="header-container">
+
+      <a href="index.html" class="logo">
+        WINNER SHOES
+      </a>
+
+      <nav class="nav">
+        <a href="novedades.html">Novedades</a>
+        <a href="hombre.html">Hombre</a>
+        <a href="mujer.html">Mujer</a>
+        <a href="ninos.html">Niños</a>
+        <a href="deporte.html">Deporte</a>
+        <a href="descuentos.html">Ofertas</a>
+      </nav>
+
+      <div class="tools">
+
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <input type="text" id="searchInput" placeholder="Buscar">
+        </div>
+
+        <button class="icon-btn">
+          <i class="fa-regular fa-heart"></i>
+        </button>
+
+        <button class="icon-btn">
+          <i class="fa-solid fa-bag-shopping"></i>
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- HERO -->
+
+  <section class="catalog-hero">
+
+    <div class="hero-content">
+
+      <h1>Explora el catálogo</h1>
+
+      <p>
+        Más de 200 referencias premium con filtros avanzados,
+        múltiples tallas y colores disponibles.
+      </p>
+
+      <a href="#catalogo" class="hero-btn">
+        Comprar ahora
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- TOOLBAR -->
+
+  <section class="toolbar">
+
+    <div class="toolbar-left">
+
+      <strong id="resultCount">
+        0 Productos
+      </strong>
+
+      <button id="toggleFilters">
+        <i class="fa-solid fa-sliders"></i>
+        Ocultar filtros
+      </button>
+
+    </div>
+
+    <div class="toolbar-right">
+
+      <select id="sortProducts">
+
+        <option value="default">
+          Ordenar por
+        </option>
+
+        <option value="low">
+          Precio: menor a mayor
+        </option>
+
+        <option value="high">
+          Precio: mayor a menor
+        </option>
+
+      </select>
+
+    </div>
+
+  </section>
+
+  <!-- MAIN -->
+
+  <main class="catalog-layout" id="catalogo">
+
+    <!-- SIDEBAR -->
+
+    <aside class="sidebar" id="sidebar">
+
+      <!-- MARCAS -->
+
+      <div class="filter-box">
+
+        <h3>Marcas</h3>
+
+        <div id="brandFilters"></div>
+
+      </div>
+
+      <!-- GENERO -->
+
+      <div class="filter-box">
+
+        <h3>Género</h3>
+
+        <label class="filter-option">
+          <input type="checkbox" class="gender-filter" value="Hombre">
+          Hombre
+        </label>
+
+        <label class="filter-option">
+          <input type="checkbox" class="gender-filter" value="Mujer">
+          Mujer
+        </label>
+
+        <label class="filter-option">
+          <input type="checkbox" class="gender-filter" value="Unisex">
+          Unisex
+        </label>
+
+      </div>
+
+      <!-- TALLAS -->
+
+      <div class="filter-box">
+
+        <h3>Tallas</h3>
+
+        <div id="sizeFilters"></div>
+
+      </div>
+
+      <!-- COLORES -->
+
+      <div class="filter-box">
+
+        <h3>Colores</h3>
+
+        <div id="colorFilters"></div>
+
+      </div>
+
+      <!-- OFERTAS -->
+
+      <div class="filter-box">
+
+        <h3>Descuentos</h3>
+
+        <label class="filter-option">
+          <input type="checkbox" id="discountFilter">
+          Solo productos en oferta
+        </label>
+
+      </div>
+
+    </aside>
+
+    <!-- PRODUCTOS -->
+
+    <section class="product-area">
+
+      <div class="product-grid" id="productGrid"></div>
+
+      <div class="load-more">
+
+        <button id="loadMoreBtn">
+          Cargar más
+        </button>
+
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- MODAL -->
+
+  <div class="modal-overlay" id="productModal">
+
+    <div class="modal">
+
+      <h2 id="modalTitle">
+        Producto
+      </h2>
+
+      <div class="variant-group">
+
+        <h4>Selecciona talla</h4>
+
+        <div class="variant-options" id="modalSizes"></div>
+
+      </div>
+
+      <div class="variant-group">
+
+        <h4>Selecciona color</h4>
+
+        <div class="variant-options" id="modalColors"></div>
+
+      </div>
+
+      <div class="modal-actions">
+
+        <button class="cancel-btn" id="closeModal">
+          Cancelar
+        </button>
+
+        <button class="confirm-btn">
+          Añadir al carrito
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+<script>
+
+  /* =========================
+     MARCAS DE LA BASE DE DATOS
+  ==========================*/
+
+  const marcas = [
+    "Nike","Adidas","Puma","Reebok","Jordan","Converse",
+    "New Balance","Asics","Vans","Fila","Under Armour",
+    "Skechers","Lacoste","DC Shoes","Salomon","Crocs",
+    "Timberland","Mizuno"
+  ];
+
+  /* =========================
+     TALLAS 34 - 44
+  ==========================*/
+
+  const tallas = [];
+
+  for(let i = 34; i <= 44; i++){
+    tallas.push(i);
+  }
+
+  /* =========================
+     COLORES
+  ==========================*/
+
+  const colores = [
+    "Negro",
+    "Blanco",
+    "Rojo",
+    "Azul",
+    "Gris",
+    "Verde",
+    "Beige"
+  ];
+
+  /* =========================
+     GENERAR FILTROS
+  ==========================*/
+
+  const brandFilters = document.getElementById("brandFilters");
+  const sizeFilters = document.getElementById("sizeFilters");
+  const colorFilters = document.getElementById("colorFilters");
+
+  marcas.forEach(marca => {
+
+    brandFilters.innerHTML += `
+      <label class="filter-option">
+        <input type="checkbox" class="brand-filter" value="${marca}">
+        ${marca}
+      </label>
+    `;
+
+  });
+
+  tallas.forEach(talla => {
+
+    sizeFilters.innerHTML += `
+      <label class="filter-option">
+        <input type="checkbox" class="size-filter" value="${talla}">
+        ${talla}
+      </label>
+    `;
+
+  });
+
+  colores.forEach(color => {
+
+    colorFilters.innerHTML += `
+      <label class="filter-option">
+        <input type="checkbox" class="color-filter" value="${color}">
+        ${color}
+      </label>
+    `;
+
+  });
+
+  /* =========================
+     PRODUCTOS
+  ==========================*/
+
+  const productos = [];
+
+  const imagenes = [
+    ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop","https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=1200&auto=format&fit=crop"],
+    ["https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1200&auto=format&fit=crop","https://images.unsplash.com/photo-1543508282-6319a3e2621f?q=80&w=1200&auto=format&fit=crop"],
+    ["https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop","https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=1200&auto=format&fit=crop"],
+    ["https://images.unsplash.com/photo-1600269452121-4f2416e55c28?q=80&w=1200&auto=format&fit=crop","https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200&auto=format&fit=crop"]
+  ];
+
+  for(let i = 1; i <= 120; i++){
+
+    const marca = marcas[i % marcas.length];
+    const genero = ["Hombre","Mujer","Unisex"][i % 3];
+    const color = colores[i % colores.length];
+    const talla = tallas[i % tallas.length];
+
+    const precio = 250000 + (i * 8000);
+
+    const oferta = i % 4 === 0;
+
+    productos.push({
+
+      id:i,
+
+      nombre:`${marca} Edition ${i}`,
+
+      marca,
+
+      genero,
+
+      talla,
+
+      color,
+
+      categoria:"Running",
+
+      precio,
+
+      descuento: oferta ? precio - 70000 : null,
+
+      oferta,
+
+      colores: Math.floor(Math.random() * 6) + 2,
+
+      imagen1:imagenes[i % 4][0],
+
+      imagen2:imagenes[i % 4][1]
+
+    });
+
+  }
+
+  /* =========================
+     VARIABLES
+  ==========================*/
+
+  let visibles = 12;
+  let productosFiltrados = [...productos];
+
+  const productGrid = document.getElementById("productGrid");
+  const resultCount = document.getElementById("resultCount");
+
+  /* =========================
+     RENDER
+  ==========================*/
+
+  function renderProducts(){
+
+    productGrid.innerHTML = "";
+
+    const mostrar = productosFiltrados.slice(0, visibles);
+
+    mostrar.forEach(producto => {
+
+      productGrid.innerHTML += `
+
+      <div class="product-card">
+
+        <div class="product-image">
+
+          <span class="badge">
+            ${producto.oferta ? "Oferta" : "Nuevo"}
+          </span>
+
+          <img class="img1" src="${producto.imagen1}">
+          <img src="${producto.imagen2}">
+
+        </div>
+
+        <div class="product-info">
+
+          <h3>${producto.nombre}</h3>
+
+          <p>${producto.marca}</p>
+
+          <p>${producto.colores} colores</p>
+
+          <p>${producto.genero}</p>
+
+          <div class="price">
+
+            ${
+              producto.oferta
+              ?
+              `
+              <span class="old-price">
+                $${producto.precio.toLocaleString()}
+              </span>
+
+              <span class="discount-price">
+                $${producto.descuento.toLocaleString()}
+              </span>
+              `
+              :
+              `$${producto.precio.toLocaleString()}`
+            }
+
+          </div>
+
+          <div class="card-actions">
+
+            <button class="btn-fav">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button
+              class="btn-cart"
+              onclick="openModal('${producto.nombre}')">
+
+              Añadir
+
+            </button>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      `;
+
+    });
+
+    resultCount.innerText =
+    `${productosFiltrados.length} Productos`;
+
+  }
+
+  renderProducts();
+
+  /* =========================
+     FILTRADO FUNCIONAL
+  ==========================*/
+
+  function filtrarProductos(){
+
+    const marcasSeleccionadas =
+    [...document.querySelectorAll(".brand-filter:checked")]
+    .map(el => el.value);
+
+    const generosSeleccionados =
+    [...document.querySelectorAll(".gender-filter:checked")]
+    .map(el => el.value);
+
+    const tallasSeleccionadas =
+    [...document.querySelectorAll(".size-filter:checked")]
+    .map(el => Number(el.value));
+
+    const coloresSeleccionados =
+    [...document.querySelectorAll(".color-filter:checked")]
+    .map(el => el.value);
+
+    const descuentoActivo =
+    document.getElementById("discountFilter").checked;
+
+    const busqueda =
+    document.getElementById("searchInput")
+    .value
+    .toLowerCase();
+
+    productosFiltrados = productos.filter(producto => {
+
+      const coincideMarca =
+      marcasSeleccionadas.length === 0 ||
+      marcasSeleccionadas.includes(producto.marca);
+
+      const coincideGenero =
+      generosSeleccionados.length === 0 ||
+      generosSeleccionados.includes(producto.genero);
+
+      const coincideTalla =
+      tallasSeleccionadas.length === 0 ||
+      tallasSeleccionadas.includes(producto.talla);
+
+      const coincideColor =
+      coloresSeleccionados.length === 0 ||
+      coloresSeleccionados.includes(producto.color);
+
+      const coincideOferta =
+      !descuentoActivo || producto.oferta;
+
+      const coincideBusqueda =
+      producto.nombre.toLowerCase().includes(busqueda) ||
+      producto.marca.toLowerCase().includes(busqueda);
+
+      return (
+        coincideMarca &&
+        coincideGenero &&
+        coincideTalla &&
+        coincideColor &&
+        coincideOferta &&
+        coincideBusqueda
+      );
+
+    });
+
+    ordenarProductos();
+  }
+
+  /* =========================
+     ORDENAR
+  ==========================*/
+
+  function ordenarProductos(){
+
+    const sort =
+    document.getElementById("sortProducts").value;
+
+    if(sort === "low"){
+
+      productosFiltrados.sort((a,b) => {
+
+        const precioA = a.descuento || a.precio;
+        const precioB = b.descuento || b.precio;
+
+        return precioA - precioB;
+
+      });
+
+    }
+
+    else if(sort === "high"){
+
+      productosFiltrados.sort((a,b) => {
+
+        const precioA = a.descuento || a.precio;
+        const precioB = b.descuento || b.precio;
+
+        return precioB - precioA;
+
+      });
+
+    }
+
+    visibles = 12;
+
+    renderProducts();
+
+  }
+
+  /* =========================
+     EVENTOS FILTROS
+  ==========================*/
+
+  document.querySelectorAll("input").forEach(input => {
+
+    input.addEventListener("change", filtrarProductos);
+
+  });
+
+  document.getElementById("searchInput")
+  .addEventListener("input", filtrarProductos);
+
+  document.getElementById("sortProducts")
+  .addEventListener("change", ordenarProductos);
+
+  /* =========================
+     LOAD MORE
+  ==========================*/
+
+  document.getElementById("loadMoreBtn")
+  .addEventListener("click", () => {
+
+    visibles += 12;
+
+    renderProducts();
+
+  });
+
+  /* =========================
+     TOGGLE FILTERS
+  ==========================*/
+
+  const sidebar =
+  document.getElementById("sidebar");
+
+  document.getElementById("toggleFilters")
+  .addEventListener("click", function(){
+
+    sidebar.classList.toggle("hidden");
+
+    this.innerHTML =
+    sidebar.classList.contains("hidden")
+    ?
+    `<i class="fa-solid fa-sliders"></i> Mostrar filtros`
+    :
+    `<i class="fa-solid fa-sliders"></i> Ocultar filtros`;
+
+  });
+
+  /* =========================
+     MODAL
+  ==========================*/
+
+  const modal =
+  document.getElementById("productModal");
+
+  const modalTitle =
+  document.getElementById("modalTitle");
+
+  const modalSizes =
+  document.getElementById("modalSizes");
+
+  const modalColors =
+  document.getElementById("modalColors");
+
+  function openModal(nombre){
+
+    modal.classList.add("active");
+
+    document.body.classList.add("modal-open");
+
+    modalTitle.innerText = nombre;
+
+    modalSizes.innerHTML = "";
+    modalColors.innerHTML = "";
+
+    tallas.forEach(talla => {
+
+      modalSizes.innerHTML += `
+        <button>${talla}</button>
+      `;
+
+    });
+
+    colores.forEach(color => {
+
+      modalColors.innerHTML += `
+        <button>${color}</button>
+      `;
+
+    });
+
+  }
+
+  document.getElementById("closeModal")
+  .addEventListener("click", () => {
+
+    modal.classList.remove("active");
+
+    document.body.classList.remove("modal-open");
+
+  });
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,817 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winner Shoes — Mi cuenta</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
+body{background:#fff;color:#111;overflow-x:hidden;}
+.top-bar{height:38px;background:#f5f5f5;display:flex;justify-content:space-between;align-items:center;padding:0 50px;font-size:13px;}
+header{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e5e5e5;}
+.navbar{height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 50px;}
+.logo{font-size:34px;font-weight:900;letter-spacing:2px;text-decoration:none;color:#111;}
+.nav-menu{display:flex;gap:35px;}
+.nav-menu a{text-decoration:none;color:#111;font-size:17px;font-weight:600;position:relative;}
+.nav-menu a::after{content:'';position:absolute;left:0;bottom:-6px;width:0%;height:2px;background:#111;transition:.3s;}
+.nav-menu a:hover::after{width:100%;}
+.nav-icons{display:flex;align-items:center;gap:20px;}
+.search-box{background:#f5f5f5;border-radius:30px;padding:10px 18px;display:flex;align-items:center;gap:10px;}
+.search-box input{border:none;background:transparent;outline:none;width:180px;font-size:15px;}
+.icon-btn{border:none;background:none;font-size:22px;cursor:pointer;position:relative;}
+.cart-count{position:absolute;top:-8px;right:-10px;width:18px;height:18px;background:#ff0055;color:#fff;border-radius:50%;font-size:11px;display:flex;align-items:center;justify-content:center;}
+.hero{height:88vh;background:url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1974&auto=format&fit=crop') center/cover no-repeat;display:flex;align-items:center;padding:0 80px;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.25);}
+.hero-content{position:relative;z-index:2;max-width:500px;color:#fff;}
+.hero-content p{font-size:18px;margin-bottom:20px;letter-spacing:2px;}
+.hero-content h1{font-size:90px;line-height:90px;font-weight:900;margin-bottom:30px;}
+.hero-content a{display:inline-block;padding:15px 35px;background:#fff;color:#111;text-decoration:none;border-radius:30px;font-weight:bold;transition:.3s;}
+.hero-content a:hover{background:#111;color:#fff;}
+.announcement{height:50px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;}
+.section{padding:80px 60px;}
+.section-title{font-size:35px;font-weight:900;margin-bottom:40px;}
+.product-slider{display:flex;gap:25px;overflow-x:auto;scroll-behavior:smooth;padding-bottom:10px;}
+.product-slider::-webkit-scrollbar{display:none;}
+.product-card{min-width:320px;background:#fff;transition:.3s;cursor:pointer;}
+.product-card:hover{transform:translateY(-5px);}
+.product-image{height:350px;overflow:hidden;background:#f5f5f5;position:relative;}
+.product-image img{width:100%;height:100%;object-fit:cover;transition:.4s;}
+.product-card:hover img{transform:scale(1.06);}
+.product-info{padding:18px 0;}
+.product-info h3{font-size:20px;margin-bottom:8px;}
+.product-info p{color:#757575;margin-bottom:8px;}
+.card-actions{display:flex;gap:10px;margin-top:12px;}
+.card-actions button{flex:1;border:none;padding:12px;border-radius:30px;cursor:pointer;font-weight:bold;font-size:14px;}
+.btn-cart{background:#000;color:#fff;}
+.btn-fav{background:#f1f1f1;}
+.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;}
+.category-card{height:500px;position:relative;overflow:hidden;}
+.category-card img{width:100%;height:100%;object-fit:cover;transition:.4s;}
+.category-card:hover img{transform:scale(1.05);}
+.category-overlay{position:absolute;bottom:50px;left:40px;color:#fff;}
+.category-overlay h2{font-size:42px;margin-bottom:15px;}
+.category-overlay a{padding:12px 28px;background:#fff;color:#111;text-decoration:none;border-radius:30px;font-weight:bold;}
+.story-section{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:80px 60px;align-items:center;}
+.story-image img{width:100%;border-radius:10px;}
+.story-text h2{font-size:50px;margin-bottom:25px;}
+.story-text p{font-size:18px;line-height:32px;color:#555;margin-bottom:30px;}
+.story-text a{padding:14px 30px;background:#111;color:#fff;text-decoration:none;border-radius:30px;}
+footer{background:#111;color:#fff;padding:70px 60px;margin-top:70px;}
+.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;}
+.footer-grid h4{margin-bottom:20px;}
+.footer-grid a{display:block;text-decoration:none;color:#cfcfcf;margin-bottom:12px;}
+.footer-bottom{margin-top:40px;border-top:1px solid #333;padding-top:20px;color:#999;}
+
+/* MINI CART */
+.cart-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;z-index:9998;}
+.mini-cart{position:fixed;top:0;right:-450px;width:420px;height:100vh;background:#fff;z-index:9999;transition:.4s;display:flex;flex-direction:column;}
+.mini-cart.active{right:0;}
+.cart-header{padding:25px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #eee;}
+.cart-items{flex:1;overflow-y:auto;padding:20px;}
+.cart-item{display:flex;gap:15px;margin-bottom:20px;}
+.cart-item img{width:90px;height:90px;object-fit:cover;background:#f6f6f6;border-radius:12px;}
+.cart-footer{padding:25px;border-top:1px solid #eee;}
+.cart-buttons{display:flex;flex-direction:column;gap:12px;margin-top:20px;}
+.nike-btn{background:#000;color:#fff;border:none;border-radius:999px;padding:14px 28px;font-weight:bold;cursor:pointer;transition:.3s;width:100%;}
+.nike-btn:hover{background:#333;}
+.outline-btn{border:1px solid #000;background:#fff;color:#000;border-radius:999px;padding:14px;font-weight:bold;cursor:pointer;width:100%;}
+
+/* MODAL SELECCIÓN PRODUCTO */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:99999;}
+.modal-overlay.open{display:flex;}
+.modal-box{background:#fff;border-radius:20px;padding:36px;width:95%;max-width:480px;position:relative;}
+.modal-box h3{font-size:22px;font-weight:900;margin-bottom:6px;}
+.modal-box .modal-precio{font-size:20px;font-weight:700;margin-bottom:20px;}
+.modal-box .modal-precio .tachado{text-decoration:line-through;color:#999;font-size:15px;margin-right:8px;}
+.modal-box .modal-precio .oferta{color:#d60000;}
+.modal-close{position:absolute;top:16px;right:20px;font-size:26px;background:none;border:none;cursor:pointer;color:#666;}
+.modal-label{font-size:13px;font-weight:700;color:#555;margin-bottom:8px;display:block;}
+.opciones{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px;}
+.opciones button{border:1px solid #ddd;border-radius:8px;padding:8px 14px;font-size:13px;cursor:pointer;background:#fff;transition:.2s;}
+.opciones button:hover,.opciones button.sel{border-color:#111;background:#111;color:#fff;}
+.modal-metodo{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;margin-bottom:20px;}
+
+/* MODAL CONFIRMACIÓN */
+.confirm-modal{position:fixed;inset:0;background:rgba(0,0,0,.6);display:none;align-items:center;justify-content:center;z-index:999999;}
+.confirm-modal.open{display:flex;}
+.confirm-box{background:#fff;border-radius:24px;padding:40px;max-width:440px;width:90%;text-align:center;position:relative;}
+.confirm-box .confirm-close{position:absolute;top:14px;right:18px;font-size:26px;background:none;border:none;cursor:pointer;color:#666;}
+.confirm-box .check-icon{font-size:58px;margin-bottom:16px;}
+.confirm-box h2{font-size:26px;font-weight:900;margin-bottom:12px;}
+.confirm-box .confirm-total{font-size:22px;font-weight:700;margin:16px 0;}
+.confirm-box .confirm-sub{color:#888;font-size:14px;margin-bottom:28px;}
+.confirm-box .confirm-btn{background:#000;color:#fff;border:none;border-radius:999px;padding:14px 32px;font-weight:bold;cursor:pointer;font-size:16px;}
+
+/* PANEL MI CUENTA */
+.cuenta-panel{background:#f9f9f9;border-bottom:1px solid #eee;padding:0;}
+.cuenta-tabs{display:flex;gap:0;padding:0 60px;overflow-x:auto;}
+.cuenta-tab{padding:18px 22px;font-size:14px;font-weight:600;color:#666;border:none;background:none;cursor:pointer;border-bottom:3px solid transparent;white-space:nowrap;}
+.cuenta-tab.active{color:#111;border-bottom-color:#111;}
+.cuenta-content{padding:40px 60px;display:none;}
+.cuenta-content.active{display:block;}
+.pedido-card{background:#fff;border:1px solid #e5e5e5;border-radius:12px;padding:20px;margin-bottom:16px;}
+.pedido-card h4{font-size:16px;font-weight:700;margin-bottom:6px;}
+.pedido-card p{font-size:13px;color:#666;margin-bottom:4px;}
+.estado-badge{display:inline-block;padding:4px 12px;border-radius:999px;font-size:12px;font-weight:700;}
+.estado-pendiente{background:#fef3c7;color:#b45309;}
+.estado-pagado{background:#d1fae5;color:#065f46;}
+.estado-enviado{background:#dbeafe;color:#1e40af;}
+.estado-entregado{background:#f3f4f6;color:#374151;}
+.fav-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
+.fav-card{background:#fff;border:1px solid #eee;border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s;}
+.fav-card:hover{transform:translateY(-3px);}
+.fav-card img{width:100%;height:180px;object-fit:cover;background:#f5f5f5;}
+.fav-card-info{padding:12px;}
+.dev-form{max-width:560px;}
+.dev-form label{display:block;font-size:13px;font-weight:700;color:#555;margin-bottom:6px;margin-top:16px;}
+.dev-form select,.dev-form textarea,.dev-form input{width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;}
+.dev-form textarea{resize:vertical;min-height:90px;}
+.btn-submit{margin-top:20px;background:#111;color:#fff;border:none;padding:12px 28px;border-radius:30px;font-weight:bold;font-size:15px;cursor:pointer;}
+
+@media(max-width:1000px){.nav-menu{display:none;}.hero-content h1{font-size:60px;line-height:60px;}.category-grid{grid-template-columns:1fr;}.story-section{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr 1fr;}.cuenta-tabs{padding:0 20px;}.cuenta-content{padding:24px 20px;}}
+@media(max-width:700px){.navbar,.hero,.section,.story-section,footer{padding-left:20px;padding-right:20px;}.hero-content h1{font-size:45px;line-height:45px;}.mini-cart{width:100%;}.search-box input{width:100px;}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div><i class="fa-solid fa-shoe-prints"></i></div>
+  <div id="topBarUsuario" style="display:flex;align-items:center;gap:20px;">
+    <span id="saludo" style="font-weight:bold;"></span>
+    <button onclick="abrirCuenta()" style="background:none;border:none;cursor:pointer;font-size:13px;text-decoration:underline;">Mi cuenta</button>
+    <button onclick="cerrarSesion()" style="background:none;border:none;cursor:pointer;font-size:13px;text-decoration:underline;color:#d60000;">Salir</button>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="navbar">
+    <a href="dashboard_cliente.html" class="logo">WINNER SHOES</a>
+    <nav class="nav-menu">
+      <a href="novedades.html">Novedades</a>
+      <a href="hombre.html">Hombre</a>
+      <a href="mujer.html">Mujer</a>
+      <a href="ninos.html">Niños</a>
+      <a href="deporte.html">Deporte</a>
+      <a href="descuentos.html">Descuentos</a>
+    </nav>
+    <div class="nav-icons">
+      <form class="search-box" onsubmit="buscar(event)">
+        <i class="fa-solid fa-magnifying-glass" style="cursor:pointer;"></i>
+        <input type="text" id="searchInput" placeholder="Buscar">
+      </form>
+      <button class="icon-btn" onclick="abrirTab('favoritos')" title="Favoritos"><i class="fa-regular fa-heart"></i></button>
+      <button class="icon-btn" onclick="toggleCart()" title="Carrito">
+        <i class="fa-solid fa-bag-shopping"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- PANEL MI CUENTA -->
+<div class="cuenta-panel" id="cuentaPanel" style="display:none;">
+  <div class="cuenta-tabs">
+    <button class="cuenta-tab active" onclick="abrirTab('pedidos')">Mis pedidos</button>
+    <button class="cuenta-tab" onclick="abrirTab('favoritos')">Favoritos</button>
+    <button class="cuenta-tab" onclick="abrirTab('devoluciones')">Devoluciones</button>
+  </div>
+
+  <!-- PEDIDOS -->
+  <div class="cuenta-content active" id="tab-pedidos">
+    <h2 style="font-size:24px;font-weight:900;margin-bottom:24px;">Mis pedidos</h2>
+    <div id="listaPedidos"><p style="color:#999;">Cargando pedidos…</p></div>
+  </div>
+
+  <!-- FAVORITOS -->
+  <div class="cuenta-content" id="tab-favoritos">
+    <h2 style="font-size:24px;font-weight:900;margin-bottom:24px;">Favoritos</h2>
+    <div class="fav-grid" id="listaFavoritos"><p style="color:#999;">Cargando favoritos…</p></div>
+  </div>
+
+  <!-- DEVOLUCIONES -->
+  <div class="cuenta-content" id="tab-devoluciones">
+    <h2 style="font-size:24px;font-weight:900;margin-bottom:24px;">Solicitar devolución</h2>
+    <div class="dev-form">
+      <label>Pedido a devolver</label>
+      <select id="devPedido" onchange="actualizarProductosDevolucion()"><option value="">Selecciona un pedido…</option></select>
+      <label>Producto a devolver</label>
+      <select id="devProducto"><option value="">Primero selecciona un pedido…</option></select>
+      <label>Motivo</label>
+      <select id="devMotivo">
+        <option value="talla_incorrecta">Talla incorrecta</option>
+        <option value="producto_defectuoso">Producto defectuoso</option>
+        <option value="no_coincide">No coincide con la descripción</option>
+        <option value="otro">Otro</option>
+      </select>
+      <label>Descripción del problema</label>
+      <textarea id="devDescripcion" placeholder="Describe el problema con detalle…"></textarea>
+      <button class="btn-submit" onclick="enviarDevolucion()">Enviar solicitud</button>
+      <div id="devMensaje" style="margin-top:14px;font-size:14px;"></div>
+    </div>
+    <div id="listaMisDevoluciones"></div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <p>NUEVA COLECCIÓN 2026</p>
+    <h1>DEFINE<br>TU ESTILO</h1>
+    <a href="catalogo.html">Comprar ahora</a>
+  </div>
+</section>
+
+<!-- ANNOUNCEMENT -->
+<div class="announcement">ENVÍOS GRATIS · CUOTAS SIN INTERÉS · NUEVAS COLECCIONES</div>
+
+<!-- PRODUCTOS -->
+<section class="section">
+  <h2 class="section-title">Lo más nuevo</h2>
+  <div class="product-slider" id="productSlider">
+    <p style="color:#999;">Cargando productos…</p>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section class="section">
+  <div class="category-grid">
+    <div class="category-card">
+      <img src="https://img.freepik.com/foto-gratis/buen-deportista-motivado-escuchando-musica-auriculares-mientras-hace-ejercicios_8353-6836.jpg?w=740&q=80">
+      <div class="category-overlay"><h2>Hombre</h2><a href="hombre.html">Comprar</a></div>
+    </div>
+    <div class="category-card">
+      <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80">
+      <div class="category-overlay"><h2>Mujer</h2><a href="mujer.html">Comprar</a></div>
+    </div>
+    <div class="category-card">
+      <img src="https://images.unsplash.com/photo-1503919005314-30d93d07d823?w=800&q=80">
+      <div class="category-overlay"><h2>Niños</h2><a href="ninos.html">Comprar</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story-section">
+  <div class="story-image">
+    <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200&auto=format&fit=crop">
+  </div>
+  <div class="story-text">
+    <h2>Explora el futuro del calzado</h2>
+    <p>Diseños premium inspirados en rendimiento, moda urbana y comodidad total. Encuentra modelos exclusivos para cada estilo y ocasión.</p>
+    <a href="catalogo.html">Explorar catálogo</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><h4>Productos</h4><a href="catalogo.html">Catálogo</a><a href="novedades.html">Novedades</a><a href="descuentos.html">Ofertas</a></div>
+    <div><h4>Ayuda</h4><a href="#" onclick="abrirTab('pedidos')">Mis pedidos</a><a href="#">Envíos</a><a href="#" onclick="abrirTab('devoluciones')">Devoluciones</a></div>
+    <div><h4>Empresa</h4><a href="#">Acerca de</a><a href="#">Noticias</a><a href="#">Sostenibilidad</a></div>
+    <div><h4>Cuenta</h4><a href="#" onclick="abrirTab('favoritos')">Favoritos</a><a href="#" onclick="abrirTab('pedidos')">Pedidos</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 Winner Shoes</div>
+</footer>
+
+<!-- MINI CART -->
+<div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+<div class="mini-cart" id="miniCart">
+  <div class="cart-header">
+    <h2 style="font-size:22px;font-weight:900;">Carrito</h2>
+    <button style="font-size:28px;background:none;border:none;cursor:pointer;" onclick="toggleCart()">×</button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p style="color:#999;">Tu carrito está vacío</p>
+  </div>
+  <div class="cart-footer">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px;">
+      <span>Subtotal</span>
+      <strong id="subtotal">$0</strong>
+    </div>
+    <p style="color:#999;font-size:13px;margin-bottom:16px;">Envío: Por calcular</p>
+    <div class="cart-buttons">
+      <button class="nike-btn" id="btnCheckout">Ir al checkout</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL SELECCIÓN (talla, color, pago) -->
+<div class="modal-overlay" id="modalProducto">
+  <div class="modal-box">
+    <button class="modal-close" onclick="cerrarModalProducto()">×</button>
+    <h3 id="modalNombre"></h3>
+    <div class="modal-precio" id="modalPrecio"></div>
+
+    <label class="modal-label">Talla</label>
+    <div class="opciones" id="opcionesTalla"></div>
+
+    <label class="modal-label">Color</label>
+    <div class="opciones" id="opcionesColor"></div>
+
+    <label class="modal-label">Método de pago</label>
+    <select class="modal-metodo" id="modalMetodoPago">
+      <option value="efectivo">Efectivo</option>
+      <option value="transferencia">Transferencia bancaria</option>
+      <option value="tarjeta">Tarjeta de crédito/débito</option>
+    </select>
+
+    <button class="nike-btn" onclick="confirmarAgregarCarrito()">Agregar al carrito</button>
+  </div>
+</div>
+
+<!-- MODAL CONFIRMACIÓN COMPRA -->
+<div class="confirm-modal" id="confirmModal">
+  <div class="confirm-box">
+    <button class="confirm-close" onclick="cerrarConfirm()">×</button>
+    <div class="check-icon">✅</div>
+    <h2>¡Pedido confirmado!</h2>
+    <div class="confirm-total" id="confirmTotal"></div>
+    <p class="confirm-sub">
+      Puedes ver el estado de tu envío en <a href="#" onclick="abrirTab('pedidos');cerrarConfirm();" style="color:#111;font-weight:bold;text-decoration:underline;">Mis pedidos</a>
+    </p>
+    <button class="confirm-btn" onclick="cerrarConfirm()">Continuar comprando</button>
+  </div>
+</div>
+
+<script>
+const fmt = n => new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(Number(n)||0);
+
+let usuarioActual = null;
+let carrito = JSON.parse(localStorage.getItem('carrito-cliente') || '[]');
+let productosCache = [];
+let productoSeleccionado = null;
+let pedidosData = [];
+
+// ── SESIÓN ──────────────────────────────────────────────────────────────────
+async function verificarSesion() {
+  try {
+    const r = await fetch('/api/me', { credentials: 'same-origin' });
+    const d = await r.json();
+    if (!d.user) { window.location.replace('login.html'); return; }
+    usuarioActual = d.user;
+    document.getElementById('saludo').textContent = 'Hola, ' + d.user.nombre.split(' ')[0];
+  } catch(_) {
+    window.location.replace('login.html');
+  }
+}
+
+async function cerrarSesion() {
+  await fetch('/api/logout', { method: 'POST', credentials: 'same-origin' });
+  localStorage.removeItem('carrito-cliente');
+  localStorage.removeItem('favoritos-cliente');
+  localStorage.removeItem('usuario');
+  window.location.replace('login.html');
+}
+
+history.replaceState(null, '');
+
+// ── BÚSQUEDA ─────────────────────────────────────────────────────────────────
+function buscar(e) {
+  e && e.preventDefault();
+  const q = document.getElementById('searchInput').value.trim();
+  window.location.href = 'catalogo.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+}
+
+// ── PANEL MI CUENTA ──────────────────────────────────────────────────────────
+function abrirCuenta() {
+  const panel = document.getElementById('cuentaPanel');
+  const visible = panel.style.display !== 'none';
+  panel.style.display = visible ? 'none' : 'block';
+  if (!visible) abrirTab('pedidos');
+}
+
+function abrirTab(nombre) {
+  document.getElementById('cuentaPanel').style.display = 'block';
+  document.querySelectorAll('.cuenta-tab').forEach((b,i) => {
+    const tabs = ['pedidos','favoritos','devoluciones'];
+    b.classList.toggle('active', tabs[i] === nombre);
+  });
+  document.querySelectorAll('.cuenta-content').forEach(c => c.classList.remove('active'));
+  const el = document.getElementById('tab-' + nombre);
+  if (el) el.classList.add('active');
+  document.getElementById('cuentaPanel').scrollIntoView({ behavior: 'smooth' });
+  if (nombre === 'pedidos') cargarPedidos();
+  if (nombre === 'favoritos') cargarFavoritos();
+  if (nombre === 'devoluciones') { cargarPedidosDevolucion(); cargarMisDevoluciones(); }
+}
+
+// ── HELPERS ──────────────────────────────────────────────────────────────────
+function estadoLabel(e) {
+  return {pendiente:'Pendiente',pagado:'Pagado',enviado:'Enviado',entregado:'Entregado'}[e] || e;
+}
+function estadoClase(e) {
+  return {pendiente:'estado-pendiente',pagado:'estado-pagado',enviado:'estado-enviado',entregado:'estado-entregado'}[e] || 'estado-pendiente';
+}
+
+// ── PEDIDOS ───────────────────────────────────────────────────────────────────
+async function cargarPedidos() {
+  const el = document.getElementById('listaPedidos');
+  el.innerHTML = '<p style="color:#999;">Cargando…</p>';
+  try {
+    const r = await fetch('/api/mis-pedidos', { credentials: 'same-origin' });
+    const lista = await r.json();
+    pedidosData = Array.isArray(lista) ? lista : [];
+    if (!pedidosData.length) {
+      el.innerHTML = '<p style="color:#999;">Aún no tienes pedidos.</p>'; return;
+    }
+    el.innerHTML = pedidosData.map(p => {
+      const items = (p.detalles || []).map(d => `<strong>${d.nombre_producto}</strong> × ${d.cantidad}`).join(' · ');
+      const tracking = p.tracking_codigo
+        ? `<p style="margin-top:8px;font-size:13px;background:#eff6ff;padding:6px 10px;border-radius:8px;color:#1e40af;">📦 Código de seguimiento: <strong>${p.tracking_codigo}</strong></p>` : '';
+      const fechaEnviado = p.fecha_enviado
+        ? `<p style="font-size:12px;color:#555;margin-top:3px;">Enviado: ${new Date(p.fecha_enviado).toLocaleDateString('es-CO',{day:'numeric',month:'long'})}</p>` : '';
+      const fechaEntregado = p.fecha_entregado
+        ? `<p style="font-size:12px;color:#065f46;margin-top:3px;">✔ Entregado: ${new Date(p.fecha_entregado).toLocaleDateString('es-CO',{day:'numeric',month:'long'})}</p>` : '';
+      return `
+        <div class="pedido-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+            <div style="flex:1;min-width:200px;">
+              <p style="font-size:12px;color:#999;margin-bottom:3px;">${new Date(p.fecha).toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'})}</p>
+              <p style="font-size:16px;font-weight:900;margin-bottom:4px;">${fmt(p.total)}</p>
+              <p style="font-size:13px;color:#555;margin-bottom:4px;">${items}</p>
+              ${fechaEnviado}${fechaEntregado}${tracking}
+            </div>
+            <span class="estado-badge ${estadoClase(p.estado)}">${estadoLabel(p.estado)}</span>
+          </div>
+        </div>`;
+    }).join('');
+  } catch(_) {
+    el.innerHTML = '<p style="color:#999;">No se pudieron cargar los pedidos.</p>';
+  }
+}
+
+// ── FAVORITOS ─────────────────────────────────────────────────────────────────
+async function cargarFavoritos() {
+  const el = document.getElementById('listaFavoritos');
+  el.innerHTML = '<p style="color:#999;">Cargando…</p>';
+  const favIds = JSON.parse(localStorage.getItem('favoritos-cliente') || '[]');
+  if (!favIds.length) {
+    el.innerHTML = '<p style="color:#999;">Aún no tienes favoritos. Pulsa el botón ♥ en cualquier producto para guardarlo.</p>'; return;
+  }
+  let productos = productosCache;
+  if (!productos.length) {
+    try {
+      const r = await fetch('/api/productos');
+      productos = await r.json();
+      productosCache = productos;
+    } catch(_) {
+      el.innerHTML = '<p style="color:#999;">No se pudieron cargar los favoritos.</p>'; return;
+    }
+  }
+  const favProds = productos.filter(p => favIds.includes(p.id_producto));
+  if (!favProds.length) {
+    el.innerHTML = '<p style="color:#999;">Aún no tienes favoritos guardados.</p>'; return;
+  }
+  el.innerHTML = '';
+  favProds.forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'fav-card';
+    const precio = Number(p.precio_venta || p.precio_lista || p.precio || 0);
+    card.innerHTML = `
+      <img src="${p.imagen || 'https://placehold.co/400x400?text=Sin+imagen'}" onerror="this.src='https://placehold.co/400x400?text=Sin+imagen'">
+      <div class="fav-card-info">
+        <p style="font-weight:700;font-size:15px;">${p.nombre}</p>
+        <p style="color:#666;font-size:13px;">${fmt(precio)}</p>
+        <div style="display:flex;gap:6px;margin-top:10px;">
+          <button onclick="abrirModalProducto(${p.id_producto})" style="flex:1;background:#111;color:#fff;border:none;border-radius:20px;padding:8px 12px;font-size:13px;cursor:pointer;">Añadir al carrito</button>
+          <button onclick="quitarFavorito(${p.id_producto},this.closest('.fav-card'))" title="Quitar de favoritos" style="background:#fff;border:1px solid #ddd;border-radius:20px;padding:8px 12px;font-size:13px;cursor:pointer;color:#d60000;">✕</button>
+        </div>
+      </div>`;
+    el.appendChild(card);
+  });
+}
+
+function quitarFavorito(id, card) {
+  const favs = JSON.parse(localStorage.getItem('favoritos-cliente') || '[]');
+  localStorage.setItem('favoritos-cliente', JSON.stringify(favs.filter(x => x !== id)));
+  if (card) card.remove();
+  const grid = document.getElementById('listaFavoritos');
+  if (grid && !grid.querySelector('.fav-card')) {
+    grid.innerHTML = '<p style="color:#999;">Aún no tienes favoritos.</p>';
+  }
+}
+
+// ── FAVORITOS (agregar desde tarjeta) ────────────────────────────────────────
+function agregarFavorito(id, btn) {
+  const favs = JSON.parse(localStorage.getItem('favoritos-cliente') || '[]');
+  if (favs.includes(id)) {
+    localStorage.setItem('favoritos-cliente', JSON.stringify(favs.filter(x => x !== id)));
+    if (btn) btn.innerHTML = '<i class="fa-regular fa-heart"></i>';
+    mostrarToast('Quitado de favoritos');
+  } else {
+    favs.push(id);
+    localStorage.setItem('favoritos-cliente', JSON.stringify(favs));
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-heart" style="color:#d60000"></i>';
+    mostrarToast('Guardado en favoritos ♥');
+  }
+}
+
+// ── DEVOLUCIONES: cargar pedidos ───────────────────────────────────────────────
+async function cargarPedidosDevolucion() {
+  try {
+    if (!pedidosData.length) {
+      const r = await fetch('/api/mis-pedidos', { credentials: 'same-origin' });
+      const lista = await r.json();
+      pedidosData = Array.isArray(lista) ? lista : [];
+    }
+    const sel = document.getElementById('devPedido');
+    sel.innerHTML = '<option value="">Selecciona un pedido…</option>';
+    const elegibles = pedidosData.filter(p => ['entregado','enviado','pagado'].includes(p.estado));
+    elegibles.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.id_pedido;
+      opt.textContent = `Pedido del ${new Date(p.fecha).toLocaleDateString('es-CO')} — ${fmt(p.total)} (${estadoLabel(p.estado)})`;
+      sel.appendChild(opt);
+    });
+    if (sel.options.length === 1) {
+      sel.innerHTML = '<option value="">No tienes pedidos disponibles para devolver</option>';
+    }
+  } catch(_) {}
+}
+
+function actualizarProductosDevolucion() {
+  const pedidoId = Number(document.getElementById('devPedido').value);
+  const selProd = document.getElementById('devProducto');
+  selProd.innerHTML = '<option value="">Selecciona un producto…</option>';
+  if (!pedidoId) return;
+  const pedido = pedidosData.find(p => p.id_pedido === pedidoId);
+  if (!pedido || !pedido.detalles) return;
+  pedido.detalles.forEach(d => {
+    const opt = document.createElement('option');
+    opt.value = d.id_producto;
+    opt.textContent = `${d.nombre_producto} × ${d.cantidad}`;
+    selProd.appendChild(opt);
+  });
+}
+
+async function enviarDevolucion() {
+  const id_pedido = document.getElementById('devPedido').value;
+  const id_producto = document.getElementById('devProducto').value;
+  const motivoSel = document.getElementById('devMotivo').value;
+  const desc = document.getElementById('devDescripcion').value.trim();
+  const msg = document.getElementById('devMensaje');
+  if (!id_pedido) { msg.textContent = 'Selecciona un pedido.'; msg.style.color = '#d60000'; return; }
+  if (!id_producto) { msg.textContent = 'Selecciona el producto a devolver.'; msg.style.color = '#d60000'; return; }
+  if (!desc) { msg.textContent = 'Escribe una descripción del problema.'; msg.style.color = '#d60000'; return; }
+  const motivo = motivoSel.replace('_',' ') + ': ' + desc;
+  try {
+    const r = await fetch('/api/devoluciones', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ id_pedido, id_producto, motivo })
+    });
+    const d = await r.json();
+    if (r.ok) {
+      msg.textContent = '✔ Solicitud enviada. Un asesor la revisará pronto.';
+      msg.style.color = '#065f46';
+      document.getElementById('devDescripcion').value = '';
+      document.getElementById('devPedido').value = '';
+      document.getElementById('devProducto').innerHTML = '<option value="">Selecciona un producto…</option>';
+      await cargarMisDevoluciones();
+    } else {
+      msg.textContent = d.message || 'Error al enviar la solicitud.';
+      msg.style.color = '#d60000';
+    }
+  } catch(_) {
+    msg.textContent = 'Error de conexión.'; msg.style.color = '#d60000';
+  }
+}
+
+// ── MIS DEVOLUCIONES (historial) ──────────────────────────────────────────────
+async function cargarMisDevoluciones() {
+  const el = document.getElementById('listaMisDevoluciones');
+  if (!el) return;
+  try {
+    const r = await fetch('/api/mis-devoluciones', { credentials: 'same-origin' });
+    const lista = await r.json();
+    if (!Array.isArray(lista) || !lista.length) {
+      el.innerHTML = '<p style="color:#999;margin-top:24px;font-size:14px;">Aún no has solicitado devoluciones.</p>'; return;
+    }
+    const badge = {solicitada:'estado-pendiente',en_revision:'estado-enviado',aprobada:'estado-pagado',rechazada:'estado-pendiente',completada:'estado-entregado'};
+    el.innerHTML = `<h3 style="font-size:18px;font-weight:800;margin:28px 0 14px;">Historial de devoluciones</h3>` +
+      lista.map(d => `
+        <div class="pedido-card">
+          <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:8px;">
+            <div>
+              <p style="font-weight:700;font-size:15px;">${d.nombre_producto || 'Producto'}</p>
+              <p style="font-size:13px;color:#555;margin-top:3px;">${d.motivo}</p>
+              <p style="font-size:12px;color:#999;margin-top:3px;">${new Date(d.fecha_creacion).toLocaleDateString('es-CO',{day:'numeric',month:'long',year:'numeric'})}</p>
+            </div>
+            <span class="estado-badge ${badge[d.estado]||'estado-pendiente'}">${d.estado.replace('_',' ')}</span>
+          </div>
+        </div>`).join('');
+  } catch(_) { el.innerHTML = ''; }
+}
+
+// ── PRODUCTOS ─────────────────────────────────────────────────────────────────
+async function cargarProductos() {
+  const slider = document.getElementById('productSlider');
+  try {
+    const r = await fetch('/api/productos');
+    productosCache = await r.json();
+    if (!Array.isArray(productosCache) || !productosCache.length) {
+      slider.innerHTML = '<p style="color:#999;">No hay productos disponibles.</p>'; return;
+    }
+    slider.innerHTML = '';
+    const favIds = JSON.parse(localStorage.getItem('favoritos-cliente') || '[]');
+    productosCache.slice(0, 8).forEach(p => {
+      const venta = Number(p.precio_venta ?? p.precio_lista ?? p.precio);
+      const lista = Number(p.precio_lista ?? p.precio);
+      const pct = p.oferta_porcentaje ? Number(p.oferta_porcentaje) : null;
+      const precioHtml = pct && pct > 0 && venta < lista
+        ? `<span style="text-decoration:line-through;color:#999;margin-right:6px;">${fmt(lista)}</span><span style="color:#d60000;">${fmt(venta)}</span>`
+        : `<span>${fmt(venta)}</span>`;
+      const img = p.imagen || 'https://placehold.co/400x400?text=Sin+imagen';
+      const esFav = favIds.includes(p.id_producto);
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-image">
+          <img src="${img}" alt="${p.nombre}" onerror="this.src='https://placehold.co/400x400?text=Sin+imagen'">
+        </div>
+        <div class="product-info">
+          <h3>${p.nombre}</h3>
+          <p>${p.categoria || ''}</p>
+          <p>${precioHtml}</p>
+          <div class="card-actions">
+            <button class="btn-fav" id="fav-${p.id_producto}" onclick="event.stopPropagation();agregarFavorito(${p.id_producto},this)">${esFav?'<i class="fa-solid fa-heart" style="color:#d60000"></i>':'<i class="fa-regular fa-heart"></i>'}</button>
+            <button class="btn-cart" onclick="event.stopPropagation();abrirModalProducto(${p.id_producto})">Añadir</button>
+          </div>
+        </div>`;
+      card.addEventListener('click', () => { window.location.href = 'producto.html?id=' + p.id_producto; });
+      slider.appendChild(card);
+    });
+  } catch(_) {
+    slider.innerHTML = '<p style="color:#999;">No se pudieron cargar los productos.</p>';
+  }
+}
+
+// ── MODAL PRODUCTO ────────────────────────────────────────────────────────────
+const TALLAS = ['34','35','36','37','38','39','40','41','42','43','44'];
+const COLORES = ['Negro','Blanco','Rojo','Azul','Gris','Verde','Beige'];
+
+function abrirModalProducto(id) {
+  const p = productosCache.find(x => x.id_producto === id);
+  if (!p) return;
+  productoSeleccionado = { ...p, tallaElegida: null, colorElegido: null };
+  document.getElementById('modalNombre').textContent = p.nombre;
+  const venta = Number(p.precio_venta ?? p.precio_lista ?? p.precio);
+  const lista = Number(p.precio_lista ?? p.precio);
+  const pct = p.oferta_porcentaje ? Number(p.oferta_porcentaje) : null;
+  const precioEl = document.getElementById('modalPrecio');
+  if (pct && pct > 0 && venta < lista) {
+    precioEl.innerHTML = `<span class="tachado">${fmt(lista)}</span><span class="oferta">${fmt(venta)}</span> <span style="background:#fde8e8;color:#c62828;padding:2px 8px;border-radius:999px;font-size:13px;">-${pct}%</span>`;
+  } else {
+    precioEl.innerHTML = `<span>${fmt(venta)}</span>`;
+  }
+  document.getElementById('opcionesTalla').innerHTML = (p.talla ? [p.talla] : TALLAS).map(t =>
+    `<button onclick="selOpc(this,'talla')" data-val="${t}">${t}</button>`).join('');
+  document.getElementById('opcionesColor').innerHTML = (p.color ? [p.color] : COLORES).map(c =>
+    `<button onclick="selOpc(this,'color')" data-val="${c}">${c}</button>`).join('');
+  document.getElementById('modalProducto').classList.add('open');
+}
+
+function selOpc(btn, tipo) {
+  btn.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('sel'));
+  btn.classList.add('sel');
+  if (tipo === 'talla') productoSeleccionado.tallaElegida = btn.dataset.val;
+  if (tipo === 'color') productoSeleccionado.colorElegido = btn.dataset.val;
+}
+
+function cerrarModalProducto() {
+  document.getElementById('modalProducto').classList.remove('open');
+  productoSeleccionado = null;
+}
+
+function confirmarAgregarCarrito() {
+  if (!productoSeleccionado) return;
+  if (!productoSeleccionado.tallaElegida) { mostrarToast('Elige una talla', true); return; }
+  if (!productoSeleccionado.colorElegido) { mostrarToast('Elige un color', true); return; }
+  const p = productoSeleccionado;
+  const precio = Number(p.precio_venta ?? p.precio_lista ?? p.precio);
+  const metodo = document.getElementById('modalMetodoPago').value;
+  const existe = carrito.find(x => x.id_producto === p.id_producto && x.talla === p.tallaElegida && x.color === p.colorElegido);
+  if (existe) { existe.cantidad++; }
+  else {
+    carrito.push({ id_producto: p.id_producto, nombre: p.nombre, precio, imagen: p.imagen || '',
+      marca: p.marca || '', talla: p.tallaElegida, color: p.colorElegido, metodo_pago: metodo, cantidad: 1 });
+  }
+  guardarCarrito();
+  cerrarModalProducto();
+  abrirCart();
+}
+
+// ── CARRITO ───────────────────────────────────────────────────────────────────
+function guardarCarrito() {
+  localStorage.setItem('carrito-cliente', JSON.stringify(carrito));
+  actualizarCartUI();
+}
+
+function actualizarCartUI() {
+  const items = document.getElementById('cartItems');
+  const count = document.getElementById('cartCount');
+  const sub = document.getElementById('subtotal');
+  const total = carrito.reduce((s,p) => s + p.precio * p.cantidad, 0);
+  count.textContent = carrito.reduce((s,p) => s + p.cantidad, 0);
+  sub.textContent = fmt(total);
+  if (!carrito.length) { items.innerHTML = '<p style="color:#999;">Tu carrito está vacío</p>'; return; }
+  items.innerHTML = carrito.map((p,i) => `
+    <div class="cart-item">
+      <img src="${p.imagen}" onerror="this.src='https://placehold.co/90x90?text=N/A'">
+      <div style="flex:1;">
+        <p style="font-weight:700;font-size:15px;">${p.nombre}</p>
+        <p style="font-size:12px;color:#666;">Talla: ${p.talla} · Color: ${p.color}</p>
+        <p style="font-size:13px;font-weight:700;margin-top:4px;">${fmt(p.precio)}</p>
+        <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+          <button onclick="cambiarCant(${i},-1)" style="border:1px solid #ddd;border-radius:50%;width:28px;height:28px;cursor:pointer;background:#fff;">-</button>
+          <span>${p.cantidad}</span>
+          <button onclick="cambiarCant(${i},1)" style="border:1px solid #ddd;border-radius:50%;width:28px;height:28px;cursor:pointer;background:#fff;">+</button>
+          <button onclick="quitarItem(${i})" style="background:none;border:none;color:#d60000;font-size:13px;cursor:pointer;">Eliminar</button>
+        </div>
+      </div>
+    </div>`).join('');
+}
+
+function cambiarCant(i, d) {
+  carrito[i].cantidad += d;
+  if (carrito[i].cantidad < 1) carrito.splice(i, 1);
+  guardarCarrito();
+}
+
+function quitarItem(i) { carrito.splice(i, 1); guardarCarrito(); }
+
+function abrirCart() {
+  document.getElementById('miniCart').classList.add('active');
+  document.getElementById('cartOverlay').style.display = 'block';
+}
+
+function cerrarCart() {
+  document.getElementById('miniCart').classList.remove('active');
+  document.getElementById('cartOverlay').style.display = 'none';
+}
+
+function toggleCart() {
+  const c = document.getElementById('miniCart');
+  c.classList.contains('active') ? cerrarCart() : abrirCart();
+}
+
+// ── CHECKOUT ──────────────────────────────────────────────────────────────────
+document.getElementById('btnCheckout').addEventListener('click', async () => {
+  if (!carrito.length) { mostrarToast('Tu carrito está vacío', true); return; }
+  const btn = document.getElementById('btnCheckout');
+  btn.disabled = true; btn.textContent = 'Procesando…';
+  try {
+    const metodo = carrito[0].metodo_pago || 'tarjeta';
+    const r = await fetch('/api/pedidos', {
+      method: 'POST', credentials: 'same-origin',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        items: carrito.map(p => ({ id_producto: p.id_producto, cantidad: p.cantidad })),
+        metodo_pago: metodo
+      })
+    });
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.message || 'Error al procesar');
+    carrito = [];
+    guardarCarrito();
+    cerrarCart();
+    document.getElementById('confirmTotal').textContent = fmt(d.total || 0);
+    document.getElementById('confirmModal').classList.add('open');
+  } catch(e) {
+    mostrarToast('Error: ' + e.message, true);
+  } finally {
+    btn.disabled = false; btn.textContent = 'Ir al checkout';
+  }
+});
+
+function cerrarConfirm() { document.getElementById('confirmModal').classList.remove('open'); }
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+function mostrarToast(msg, error = false) {
+  let t = document.getElementById('toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'toast';
+    t.style.cssText = 'position:fixed;bottom:30px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:999px;font-weight:bold;font-size:14px;z-index:9999999;transition:opacity .3s;';
+    document.body.appendChild(t);
+  }
+  t.style.background = error ? '#d60000' : '#111';
+  t.style.color = '#fff';
+  t.textContent = msg;
+  t.style.opacity = '1';
+  clearTimeout(t._t);
+  t._t = setTimeout(() => { t.style.opacity = '0'; }, 3000);
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', async () => {
+  await verificarSesion();
+  await cargarProductos();
+  actualizarCartUI();
+});
+</script>
+</body>
+</html>

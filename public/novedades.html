@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Novedades | Winner Shoes</title>
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#fff;
+      color:#111;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    .top-bar{
+      background:#000;
+      color:#fff;
+      height:40px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 40px;
+      font-size:13px;
+    }
+
+    .top-links{
+      display:flex;
+      gap:25px;
+    }
+
+    .header{
+      position:sticky;
+      top:0;
+      z-index:999;
+      background:#fff;
+      border-bottom:1px solid #e5e5e5;
+    }
+
+    .header-container{
+      height:80px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 40px;
+    }
+
+    .logo{
+      font-size:32px;
+      font-weight:bold;
+      letter-spacing:1px;
+    }
+
+    .nav{
+      display:flex;
+      gap:35px;
+      font-size:17px;
+      font-weight:600;
+    }
+
+    .nav a{
+      position:relative;
+      padding-bottom:5px;
+    }
+
+    .nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0;
+      height:2px;
+      background:#000;
+      transition:.3s;
+    }
+
+    .nav a:hover::after{
+      width:100%;
+    }
+
+    .tools{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+    .search-box{
+      background:#f5f5f5;
+      padding:10px 18px;
+      border-radius:30px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .search-box input{
+      border:none;
+      background:none;
+      outline:none;
+      width:180px;
+    }
+
+    .icon-btn{
+      border:none;
+      background:none;
+      font-size:20px;
+      cursor:pointer;
+      transition:.3s;
+    }
+
+    .icon-btn:hover{
+      transform:scale(1.1);
+    }
+
+    .page-head{
+      padding:40px;
+    }
+
+    .page-head h1{
+      font-size:42px;
+      margin-bottom:10px;
+    }
+
+    .page-head p{
+      color:#666;
+      font-size:18px;
+    }
+
+    .toolbar{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:0 40px 30px;
+      flex-wrap:wrap;
+      gap:20px;
+    }
+
+    .toolbar-left{
+      display:flex;
+      align-items:center;
+      gap:20px;
+    }
+
+    .toolbar-right{
+      display:flex;
+      gap:20px;
+    }
+
+    .toolbar button,
+    .toolbar select{
+      border:1px solid #ddd;
+      background:#fff;
+      padding:12px 18px;
+      border-radius:30px;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    .main-layout{
+      display:flex;
+      gap:40px;
+      padding:0 40px 60px;
+    }
+
+    .sidebar{
+      width:280px;
+      flex-shrink:0;
+      transition:.4s;
+    }
+
+    .sidebar.hide{
+      width:0;
+      overflow:hidden;
+      opacity:0;
+    }
+
+    .filter-box{
+      border-bottom:1px solid #e5e5e5;
+      padding:20px 0;
+    }
+
+    .filter-box h3{
+      font-size:18px;
+      margin-bottom:15px;
+    }
+
+    .filter-option{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      margin-bottom:12px;
+      cursor:pointer;
+      font-size:15px;
+    }
+
+    .color-option{
+      width:28px;
+      height:28px;
+      border-radius:50%;
+      border:2px solid #ddd;
+      cursor:pointer;
+    }
+
+    .product-area{
+      flex:1;
+    }
+
+    .product-grid{
+      display:grid;
+      grid-template-columns:repeat(3,1fr);
+      gap:30px;
+    }
+
+    .product-card{
+      cursor:pointer;
+      transition:.3s;
+    }
+
+    .product-card:hover{
+      transform:translateY(-4px);
+    }
+
+    .product-image{
+      position:relative;
+      background:#f7f7f7;
+      overflow:hidden;
+      aspect-ratio:1/1;
+    }
+
+    .product-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:.4s;
+      position:absolute;
+      top:0;
+      left:0;
+    }
+
+    .product-card:hover .img1{
+      opacity:0;
+    }
+
+    .badge{
+      position:absolute;
+      top:15px;
+      left:15px;
+      background:#fff;
+      padding:6px 12px;
+      font-size:12px;
+      font-weight:bold;
+      border-radius:20px;
+      z-index:10;
+    }
+
+    .product-info{
+      padding:18px 5px;
+    }
+
+    .product-info h3{
+      font-size:18px;
+      margin-bottom:8px;
+    }
+
+    .product-info p{
+      color:#757575;
+      margin-bottom:6px;
+    }
+
+    .price{
+      color:#111 !important;
+      font-weight:bold;
+      margin-top:10px;
+    }
+
+    .load-more{
+      display:flex;
+      justify-content:center;
+      margin-top:50px;
+    }
+
+    .load-more button{
+      background:#000;
+      color:#fff;
+      border:none;
+      padding:16px 40px;
+      border-radius:40px;
+      font-size:16px;
+      cursor:pointer;
+    }
+
+    footer{
+      background:#111;
+      color:#fff;
+      padding:60px 40px;
+      margin-top:80px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:40px;
+    }
+
+    .footer-grid h4{
+      margin-bottom:20px;
+    }
+
+    .footer-grid a{
+      display:block;
+      margin-bottom:12px;
+      color:#ccc;
+    }
+
+    @media(max-width:1100px){
+
+      .product-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media(max-width:700px){
+
+      .nav{
+        display:none;
+      }
+
+      .product-grid{
+        grid-template-columns:1fr;
+      }
+
+      .sidebar{
+        position:fixed;
+        left:0;
+        top:0;
+        width:100%;
+        height:100vh;
+        background:#fff;
+        z-index:9999;
+        padding:30px;
+        overflow:auto;
+      }
+
+      .header-container{
+        padding:0 20px;
+      }
+
+      .main-layout{
+        padding:0 20px 60px;
+      }
+
+    }
+
+  </style>
+</head>
+
+<body>
+
+<div class="top-bar">
+
+  <div>
+    <i class="fa-solid fa-shoe-prints"></i>
+    WINNER SHOES
+  </div>
+
+  <div class="top-links">
+    <a href="#">Ayuda</a>
+    <a href="#">Estado del pedido</a>
+    <a href="registro.html">Únete</a>
+    <a href="login.html">Iniciar sesión</a>
+  </div>
+
+</div>
+
+<header class="header">
+
+  <div class="header-container">
+
+    <a href="index.html" class="logo">
+      WINNER SHOES
+    </a>
+
+    <nav class="nav">
+      <a href="novedades.html">Novedades</a>
+      <a href="hombre.html">Hombre</a>
+      <a href="mujer.html">Mujer</a>
+      <a href="ninos.html">Niños</a>
+      <a href="deporte.html">Deporte</a>
+      <a href="descuentos.html">Descuentos</a>
+    </nav>
+
+    <div class="tools">
+
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass"></i>
+        <input type="text" id="searchInput" placeholder="Buscar">
+      </div>
+
+      <button class="icon-btn">
+        <i class="fa-regular fa-heart"></i>
+      </button>
+
+      <button class="icon-btn">
+        <i class="fa-solid fa-bag-shopping"></i>
+      </button>
+
+    </div>
+
+  </div>
+
+</header>
+
+<section class="page-head">
+
+  <h1>Novedades</h1>
+
+  <p>
+    Descubre los últimos lanzamientos y sneakers más recientes.
+  </p>
+
+</section>
+
+<section class="toolbar">
+
+  <div class="toolbar-left">
+
+    <strong id="totalProductos">
+      50 Productos
+    </strong>
+
+    <button id="toggleFilters">
+      <i class="fa-solid fa-sliders"></i>
+      Ocultar filtros
+    </button>
+
+  </div>
+
+  <div class="toolbar-right">
+
+    <select id="ordenar">
+      <option value="default">Ordenar por</option>
+      <option value="menor">Precio: menor a mayor</option>
+      <option value="mayor">Precio: mayor a menor</option>
+    </select>
+
+  </div>
+
+</section>
+
+<main class="main-layout">
+
+  <aside class="sidebar" id="sidebar">
+
+    <div class="filter-box">
+      <h3>Marca</h3>
+
+      <label class="filter-option"><input type="radio" name="marca" value="Nike"> Nike</label>
+      <label class="filter-option"><input type="radio" name="marca" value="Adidas"> Adidas</label>
+      <label class="filter-option"><input type="radio" name="marca" value="Puma"> Puma</label>
+      <label class="filter-option"><input type="radio" name="marca" value="Jordan"> Jordan</label>
+      <label class="filter-option"><input type="radio" name="marca" value="New Balance"> New Balance</label>
+
+    </div>
+
+    <div class="filter-box">
+      <h3>Color</h3>
+
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+
+        <div class="color-option" data-color="Negro" style="background:black;"></div>
+
+        <div class="color-option" data-color="Blanco" style="background:white;"></div>
+
+        <div class="color-option" data-color="Rojo" style="background:red;"></div>
+
+        <div class="color-option" data-color="Azul" style="background:blue;"></div>
+
+      </div>
+
+    </div>
+
+    <div class="filter-box">
+
+      <h3>Talla</h3>
+
+      <label class="filter-option"><input type="radio" name="talla" value="38">38</label>
+      <label class="filter-option"><input type="radio" name="talla" value="39">39</label>
+      <label class="filter-option"><input type="radio" name="talla" value="40">40</label>
+      <label class="filter-option"><input type="radio" name="talla" value="41">41</label>
+
+    </div>
+
+    <div class="filter-box">
+
+      <h3>Descuento</h3>
+
+      <label class="filter-option">
+        <input type="checkbox" id="filtroDescuento">
+        Productos en oferta
+      </label>
+
+    </div>
+
+  </aside>
+
+  <section class="product-area">
+
+    <div class="product-grid" id="productGrid"></div>
+
+    <div class="load-more">
+      <button id="loadMore">
+        Cargar más
+      </button>
+    </div>
+
+  </section>
+
+</main>
+
+<footer>
+
+  <div class="footer-grid">
+
+    <div>
+      <h4>Productos</h4>
+      <a href="#">Calzado</a>
+      <a href="#">Running</a>
+      <a href="#">Lifestyle</a>
+    </div>
+
+    <div>
+      <h4>Ayuda</h4>
+      <a href="#">Pedidos</a>
+      <a href="#">Envíos</a>
+      <a href="#">Devoluciones</a>
+    </div>
+
+    <div>
+      <h4>Empresa</h4>
+      <a href="#">Acerca de</a>
+      <a href="#">Noticias</a>
+    </div>
+
+    <div>
+      <h4>Cuenta</h4>
+      <a href="login.html">Iniciar sesión</a>
+      <a href="registro.html">Registrarse</a>
+    </div>
+
+  </div>
+
+</footer>
+
+<script>
+
+const productos = [];
+
+const marcas = ["Nike","Adidas","Puma","Jordan","New Balance"];
+const colores = ["Negro","Blanco","Rojo","Azul"];
+
+for(let i=1;i<=50;i++){
+
+  productos.push({
+
+    nombre:`Sneaker ${i}`,
+
+    marca:marcas[i % marcas.length],
+
+    color:colores[i % colores.length],
+
+    talla:[38,39,40,41][i % 4],
+
+    precio:200000 + (i * 10000),
+
+    descuento:i % 3 === 0,
+
+    img1:`https://picsum.photos/500?random=${i}`,
+
+    img2:`https://picsum.photos/500?random=${i+100}`
+
+  });
+
+}
+
+const grid = document.getElementById("productGrid");
+
+let visibles = 6;
+
+function renderProductos(lista){
+
+  grid.innerHTML = "";
+
+  lista.slice(0,visibles).forEach(producto=>{
+
+    grid.innerHTML += `
+
+      <div class="product-card">
+
+        <div class="product-image">
+
+          <span class="badge">
+            ${producto.descuento ? "Oferta" : "Nuevo"}
+          </span>
+
+          <img class="img1" src="${producto.img1}">
+
+          <img src="${producto.img2}">
+
+        </div>
+
+        <div class="product-info">
+
+          <h3>${producto.nombre}</h3>
+
+          <p>${producto.marca}</p>
+
+          <p>${producto.color}</p>
+
+          <p>Talla ${producto.talla}</p>
+
+          <p class="price">
+            $${producto.precio.toLocaleString()}
+          </p>
+
+        </div>
+
+      </div>
+
+    `;
+
+  });
+
+}
+
+function aplicarFiltros(){
+
+  let lista = [...productos];
+
+  const marca = document.querySelector('input[name="marca"]:checked');
+  const talla = document.querySelector('input[name="talla"]:checked');
+  const descuento = document.getElementById("filtroDescuento").checked;
+  const buscar = document.getElementById("searchInput").value.toLowerCase();
+
+  if(marca){
+    lista = lista.filter(p => p.marca === marca.value);
+  }
+
+  if(talla){
+    lista = lista.filter(p => p.talla == talla.value);
+  }
+
+  if(descuento){
+    lista = lista.filter(p => p.descuento);
+  }
+
+  if(colorSeleccionado){
+    lista = lista.filter(p => p.color === colorSeleccionado);
+  }
+
+  if(buscar){
+    lista = lista.filter(p =>
+      p.nombre.toLowerCase().includes(buscar) ||
+      p.marca.toLowerCase().includes(buscar)
+    );
+  }
+
+  const ordenar = document.getElementById("ordenar").value;
+
+  if(ordenar === "menor"){
+    lista.sort((a,b)=>a.precio-b.precio);
+  }
+
+  if(ordenar === "mayor"){
+    lista.sort((a,b)=>b.precio-a.precio);
+  }
+
+  document.getElementById("totalProductos").innerText =
+  `${lista.length} Productos`;
+
+  renderProductos(lista);
+
+}
+
+let colorSeleccionado = "";
+
+document.querySelectorAll(".color-option").forEach(color=>{
+
+  color.addEventListener("click",()=>{
+
+    colorSeleccionado = color.dataset.color;
+
+    aplicarFiltros();
+
+  });
+
+});
+
+document.querySelectorAll("input").forEach(input=>{
+
+  input.addEventListener("change", aplicarFiltros);
+
+});
+
+document.getElementById("searchInput")
+.addEventListener("keyup", aplicarFiltros);
+
+document.getElementById("ordenar")
+.addEventListener("change", aplicarFiltros);
+
+document.getElementById("loadMore")
+.addEventListener("click",()=>{
+
+  visibles += 6;
+
+  aplicarFiltros();
+
+});
+
+document.getElementById("toggleFilters")
+.addEventListener("click",()=>{
+
+  document.getElementById("sidebar")
+  .classList.toggle("hide");
+
+});
+
+renderProductos(productos);
+
+</script>
+
+</body>
+</html>

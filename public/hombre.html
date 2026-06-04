@@ -1,0 +1,1534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Hombre | Winner Shoes</title>
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#fff;
+      color:#111;
+      overflow-x:hidden;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    img{
+      width:100%;
+      display:block;
+    }
+
+    button{
+      cursor:pointer;
+      border:none;
+      transition:.3s;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    .header{
+      position:sticky;
+      top:0;
+      z-index:999;
+      background:#fff;
+      border-bottom:1px solid #eee;
+    }
+
+    .header-container{
+      height:82px;
+      padding:0 40px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+    }
+
+    .logo{
+      font-size:30px;
+      font-weight:900;
+      letter-spacing:2px;
+    }
+
+    .nav{
+      display:flex;
+      gap:35px;
+      font-weight:600;
+    }
+
+    .nav a{
+      position:relative;
+      padding-bottom:5px;
+    }
+
+    .nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0;
+      height:2px;
+      background:#000;
+      transition:.3s;
+    }
+
+    .nav a:hover::after{
+      width:100%;
+    }
+
+    .tools{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .search-box{
+      background:#f5f5f5;
+      border-radius:40px;
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .search-box input{
+      border:none;
+      outline:none;
+      background:none;
+      width:170px;
+    }
+
+    .icon-btn{
+      background:none;
+      font-size:20px;
+      position:relative;
+    }
+
+    .icon-btn:hover{
+      transform:scale(1.08);
+    }
+
+    .cart-count{
+      position:absolute;
+      top:-8px;
+      right:-10px;
+      width:18px;
+      height:18px;
+      background:red;
+      border-radius:50%;
+      color:#fff;
+      font-size:11px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero{
+      height:88vh;
+      background:
+      linear-gradient(to top, rgba(0,0,0,.65), rgba(0,0,0,.1)),
+      url('https://images.unsplash.com/photo-1514996937319-344454492b37?q=80&w=1800&auto=format&fit=crop');
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:flex-end;
+      padding:70px;
+      color:#fff;
+    }
+
+    .hero-content{
+      max-width:600px;
+    }
+
+    .hero-content p{
+      letter-spacing:3px;
+      margin-bottom:18px;
+      font-size:14px;
+    }
+
+    .hero-content h1{
+      font-size:72px;
+      line-height:72px;
+      font-weight:900;
+      text-transform:uppercase;
+      margin-bottom:25px;
+    }
+
+    .hero-btn{
+      background:#000;
+      color:#fff;
+      padding:16px 34px;
+      border-radius:40px;
+      font-weight:bold;
+      font-size:15px;
+    }
+
+    .hero-btn:hover{
+      background:#fff;
+      color:#000;
+      transform:scale(1.05);
+    }
+
+    /* =========================
+       SECTION
+    ========================== */
+
+    .section{
+      padding:80px 40px;
+    }
+
+    .section-title{
+      font-size:42px;
+      margin-bottom:45px;
+      font-weight:900;
+    }
+
+    /* =========================
+       CATEGORY GRID
+    ========================== */
+
+    .category-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:25px;
+    }
+
+    .category-card{
+      position:relative;
+      overflow:hidden;
+      border-radius:18px;
+      height:430px;
+    }
+
+    .category-card img{
+      height:100%;
+      object-fit:cover;
+      transition:.5s;
+    }
+
+    .category-card:hover img{
+      transform:scale(1.08);
+    }
+
+    .category-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.8), transparent);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:30px;
+      color:#fff;
+    }
+
+    .category-overlay h3{
+      font-size:32px;
+      margin-bottom:15px;
+    }
+
+    .category-btn{
+      width:max-content;
+      padding:13px 26px;
+      border-radius:40px;
+      background:#fff;
+      color:#000;
+      font-weight:bold;
+    }
+
+    .category-btn:hover{
+      background:#000;
+      color:#fff;
+      transform:scale(1.05);
+    }
+
+    /* =========================
+       PRODUCTS
+    ========================== */
+
+    .products-wrapper{
+      position:relative;
+    }
+
+    .products-slider{
+      display:flex;
+      gap:24px;
+      overflow-x:auto;
+      scroll-behavior:smooth;
+      padding-bottom:10px;
+    }
+
+    .products-slider::-webkit-scrollbar{
+      display:none;
+    }
+
+    .product-card{
+      min-width:320px;
+      flex-shrink:0;
+    }
+
+    .product-image{
+      background:#f6f6f6;
+      border-radius:20px;
+      overflow:hidden;
+      position:relative;
+      aspect-ratio:1/1;
+    }
+
+    .product-image img{
+      height:100%;
+      object-fit:cover;
+      transition:.4s;
+      position:absolute;
+      top:0;
+      left:0;
+    }
+
+    .product-card:hover .img1{
+      opacity:0;
+    }
+
+    .badge{
+      position:absolute;
+      top:15px;
+      left:15px;
+      background:#fff;
+      padding:6px 14px;
+      border-radius:30px;
+      font-size:12px;
+      font-weight:bold;
+      z-index:10;
+    }
+
+    .product-actions{
+      position:absolute;
+      top:15px;
+      right:15px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:10;
+    }
+
+    .product-actions button{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      background:#fff;
+      font-size:16px;
+    }
+
+    .product-actions button:hover{
+      transform:scale(1.08);
+    }
+
+    .product-info{
+      padding:18px 5px;
+    }
+
+    .product-info h3{
+      font-size:18px;
+      margin-bottom:8px;
+    }
+
+    .product-info p{
+      color:#666;
+      margin-bottom:5px;
+    }
+
+    .price{
+      color:#000 !important;
+      font-weight:bold;
+      margin-top:10px;
+    }
+
+    .slider-btn{
+      position:absolute;
+      top:40%;
+      transform:translateY(-50%);
+      width:52px;
+      height:52px;
+      border-radius:50%;
+      background:#fff;
+      box-shadow:0 4px 14px rgba(0,0,0,.2);
+      font-size:20px;
+      z-index:20;
+    }
+
+    .slider-btn:hover{
+      transform:translateY(-50%) scale(1.05);
+    }
+
+    .prev{
+      left:-15px;
+    }
+
+    .next{
+      right:-15px;
+    }
+
+    /* =========================
+       AUTH MODAL
+    ========================== */
+
+    .modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.6);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:20px;
+    }
+
+    .modal-content{
+      background:#fff;
+      width:100%;
+      max-width:420px;
+      border-radius:22px;
+      padding:40px 30px;
+      text-align:center;
+      animation:fade .3s ease;
+    }
+
+    @keyframes fade{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .modal-content h2{
+      font-size:32px;
+      margin-bottom:15px;
+    }
+
+    .modal-content p{
+      color:#666;
+      margin-bottom:30px;
+      line-height:24px;
+    }
+
+    .modal-buttons{
+      display:flex;
+      flex-direction:column;
+      gap:15px;
+    }
+
+    .login-btn{
+      background:#000;
+      color:#fff;
+      padding:15px;
+      border-radius:40px;
+      font-weight:bold;
+    }
+
+    .register-btn{
+      background:#f5f5f5;
+      color:#000;
+      padding:15px;
+      border-radius:40px;
+      font-weight:bold;
+    }
+
+    .close-modal{
+      margin-top:20px;
+      background:none;
+      font-size:14px;
+      color:#777;
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer{
+      background:#111;
+      color:#fff;
+      padding:70px 40px;
+      margin-top:80px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:40px;
+    }
+
+    .footer-grid h4{
+      margin-bottom:18px;
+    }
+
+    .footer-grid a{
+      display:block;
+      color:#ccc;
+      margin-bottom:12px;
+    }
+
+    .footer-grid a:hover{
+      color:#fff;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media(max-width:1100px){
+
+      .category-grid{
+        grid-template-columns:repeat(2,1fr);
+      }
+
+    }
+
+    @media(max-width:850px){
+
+      .nav{
+        display:none;
+      }
+
+      .hero-content h1{
+        font-size:54px;
+        line-height:54px;
+      }
+
+    }
+
+    @media(max-width:700px){
+
+      .header-container{
+        padding:0 20px;
+      }
+
+      .section{
+        padding:60px 20px;
+      }
+
+      .hero{
+        padding:40px 20px;
+      }
+
+      .hero-content h1{
+        font-size:42px;
+        line-height:42px;
+      }
+
+      .category-grid{
+        grid-template-columns:1fr;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .product-card{
+        min-width:270px;
+      }
+
+      .search-box input{
+        width:120px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <div class="header-container">
+
+      <a href="index.html" class="logo">
+        WINNER
+      </a>
+
+      <nav class="nav">
+
+        <a href="novedades.html">Novedades</a>
+        <a href="hombre.html">Hombre</a>
+        <a href="mujer.html">Mujer</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="descuentos.html">Descuentos</a>
+
+      </nav>
+
+      <div class="tools">
+
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+
+          <input
+          type="text"
+          placeholder="Buscar">
+        </div>
+
+        <button class="icon-btn">
+          <i class="fa-regular fa-heart"></i>
+        </button>
+
+        <button class="icon-btn">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-count">0</span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <p>COLECCIÓN HOMBRE 2026</p>
+
+      <h1>
+        RENDIMIENTO<br>
+        Y ESTILO
+      </h1>
+
+      <button
+      class="hero-btn"
+      onclick="goCatalog('all')">
+
+        Comprar
+
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- CATEGORY GRID -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      Compra por categoría
+    </h2>
+
+    <div class="category-grid">
+
+      <div class="category-card">
+
+        <img
+        loading="lazy"
+        src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="category-overlay">
+
+          <h3>Running</h3>
+
+          <button
+          class="category-btn"
+          onclick="goCatalog('running')">
+
+            Explorar Running
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="category-card">
+
+        <img
+        loading="lazy"
+        src="https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="category-overlay">
+
+          <h3>Training</h3>
+
+          <button
+          class="category-btn"
+          onclick="goCatalog('training')">
+
+            Explorar Training
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="category-card">
+
+        <img
+        loading="lazy"
+        src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="category-overlay">
+
+          <h3>Fútbol</h3>
+
+          <button
+          class="category-btn"
+          onclick="goCatalog('futbol')">
+
+            Explorar Fútbol
+
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="category-card">
+
+        <img
+        loading="lazy"
+        src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="category-overlay">
+
+          <h3>Lifestyle</h3>
+
+          <button
+          class="category-btn"
+          onclick="goCatalog('lifestyle')">
+
+            Explorar Lifestyle
+
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- PRODUCTOS -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      Lo más nuevo para él
+    </h2>
+
+    <div class="products-wrapper">
+
+      <button class="slider-btn prev">
+        <i class="fa-solid fa-chevron-left"></i>
+      </button>
+
+      <button class="slider-btn next">
+        <i class="fa-solid fa-chevron-right"></i>
+      </button>
+
+      <div class="products-slider" id="slider">
+
+        <!-- PRODUCTO 1 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Nuevo
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Nike Air Max</h3>
+
+            <p>Running Hombre</p>
+
+            <p class="price">$420.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 2 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Bestseller
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1543508282-6319a3e2621f?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Adidas Ultraboost</h3>
+
+            <p>Training Hombre</p>
+
+            <p class="price">$510.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 3 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Oferta
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Puma RS-X</h3>
+
+            <p>Lifestyle Hombre</p>
+
+            <p class="price">$390.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 4 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Nuevo
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>New Balance 550</h3>
+
+            <p>Casual Hombre</p>
+
+            <p class="price">$460.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 5 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Running
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Asics Gel</h3>
+
+            <p>Performance Hombre</p>
+
+            <p class="price">$530.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 6 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Premium
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Jordan Retro</h3>
+
+            <p>Basket Hombre</p>
+
+            <p class="price">$780.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 7 -->
+
+        <div class="product-card">
+          <div class="product-image">
+
+            <span class="badge">
+              Nuevo
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1600185365926-3a2ce3cdb9eb?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Reebok Classic</h3>
+
+            <p>Training Hombre</p>
+
+            <p class="price">$350.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 8 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Top
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1543508282-6319a3e2621f?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Fila Street</h3>
+
+            <p>Urban Hombre</p>
+
+            <p class="price">$300.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 9 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Bestseller
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Converse Pro</h3>
+
+            <p>Lifestyle Hombre</p>
+
+            <p class="price">$290.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 10 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Sport
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Under Armour</h3>
+
+            <p>Sport Hombre</p>
+
+            <p class="price">$410.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 11 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Running
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Skechers Run</h3>
+
+            <p>Running Hombre</p>
+
+            <p class="price">$360.000</p>
+
+          </div>
+
+        </div>
+
+        <!-- PRODUCTO 12 -->
+
+        <div class="product-card">
+
+          <div class="product-image">
+
+            <span class="badge">
+              Premium
+            </span>
+
+            <div class="product-actions">
+
+              <button onclick="handleFavorite(event)">
+                <i class="fa-regular fa-heart"></i>
+              </button>
+
+              <button onclick="handleCart(event)">
+                <i class="fa-solid fa-bag-shopping"></i>
+              </button>
+
+            </div>
+
+            <img class="img1"
+            src="https://images.unsplash.com/photo-1560769629-975ec94e6a86?q=80&w=1200&auto=format&fit=crop">
+
+            <img
+            src="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?q=80&w=1200&auto=format&fit=crop">
+
+          </div>
+
+          <div class="product-info">
+
+            <h3>Jordan Legacy</h3>
+
+            <p>Basket Hombre</p>
+
+            <p class="price">$820.000</p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MODAL LOGIN -->
+
+  <div class="modal" id="authModal">
+
+    <div class="modal-content">
+
+      <h2>
+        Inicia sesión
+      </h2>
+
+      <p>
+        Debes iniciar sesión o registrarte
+        para guardar favoritos y agregar
+        productos al carrito.
+      </p>
+
+      <div class="modal-buttons">
+
+        <button
+        class="login-btn"
+        onclick="window.location.href='login.html'">
+
+          Iniciar sesión
+
+        </button>
+
+        <button
+        class="register-btn"
+        onclick="window.location.href='registro.html'">
+
+          Registrarse
+
+        </button>
+
+      </div>
+
+      <button
+      class="close-modal"
+      onclick="closeModal()">
+
+        Continuar explorando
+
+      </button>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div>
+
+        <h4>Productos</h4>
+
+        <a href="#">Running</a>
+        <a href="#">Lifestyle</a>
+        <a href="#">Basket</a>
+
+      </div>
+
+      <div>
+
+        <h4>Ayuda</h4>
+
+        <a href="#">Pedidos</a>
+        <a href="#">Envíos</a>
+        <a href="#">Devoluciones</a>
+
+      </div>
+
+      <div>
+
+        <h4>Empresa</h4>
+
+        <a href="#">Acerca de</a>
+        <a href="#">Noticias</a>
+
+      </div>
+
+      <div>
+
+        <h4>Cuenta</h4>
+
+        <a href="login.html">Iniciar sesión</a>
+        <a href="registro.html">Registrarse</a>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script>
+
+    /* =========================
+       REDIRECCION CATALOGO
+    ========================== */
+
+    function goCatalog(category){
+
+      if(category === "all"){
+
+        window.location.href =
+        "catalogo.html?genero=hombre";
+
+      }else{
+
+        window.location.href =
+        `catalogo.html?genero=hombre&categoria=${category}`;
+
+      }
+
+    }
+
+    /* =========================
+       SLIDER
+    ========================== */
+
+    const slider =
+    document.getElementById("slider");
+
+    document.querySelector(".next")
+    .onclick = ()=>{
+
+      slider.scrollLeft += 350;
+
+    }
+
+    document.querySelector(".prev")
+    .onclick = ()=>{
+
+      slider.scrollLeft -= 350;
+
+    }
+
+    /* =========================
+       AUTH MODAL
+    ========================== */
+
+    const modal =
+    document.getElementById("authModal");
+
+    function openModal(){
+
+      modal.style.display = "flex";
+
+    }
+
+    function closeModal(){
+
+      modal.style.display = "none";
+
+    }
+
+    /* =========================
+       FAVORITOS
+    ========================== */
+
+    function handleFavorite(event){
+
+      event.stopPropagation();
+
+      const logged =
+      localStorage.getItem("usuario");
+
+      if(!logged){
+
+        openModal();
+
+      }else{
+
+        alert("Producto agregado a favoritos");
+
+      }
+
+    }
+
+    /* =========================
+       CARRITO
+    ========================== */
+
+    let carrito = 0;
+
+    const cartCount =
+    document.querySelector(".cart-count");
+
+    function handleCart(event){
+
+      event.stopPropagation();
+
+      const logged =
+      localStorage.getItem("usuario");
+
+      if(!logged){
+
+        openModal();
+
+      }else{
+
+        carrito++;
+
+        cartCount.innerText = carrito;
+
+        alert("Producto agregado al carrito");
+
+      }
+
+    }
+
+    /* =========================
+       BUSQUEDA
+    ========================== */
+
+    const searchInput =
+    document.querySelector(".search-box input");
+
+    searchInput.addEventListener("keyup", ()=>{
+
+      const value =
+      searchInput.value.toLowerCase();
+
+      const cards =
+      document.querySelectorAll(".product-card");
+
+      cards.forEach(card=>{
+
+        const text =
+        card.innerText.toLowerCase();
+
+        if(text.includes(value)){
+
+          card.style.display = "block";
+
+        }else{
+
+          card.style.display = "none";
+
+        }
+
+      });
+
+    });
+
+    /* =========================
+       CLICK PRODUCTO
+    ========================== */
+
+    const productCards =
+    document.querySelectorAll(".product-card");
+
+    productCards.forEach(card=>{
+
+      card.addEventListener("click", ()=>{
+
+        window.location.href =
+        "detalle-producto.html?genero=hombre";
+
+      });
+
+    });
+
+  </script>
+
+</body>
+</html>

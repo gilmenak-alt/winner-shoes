@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Administración — Winner Shoes</title>
+  <link rel="stylesheet" href="css/theme.css">
+  <style>
+    :root {
+      --black: #111;
+      --surface: #f5f5f5;
+      --border: #e0e0e0;
+      --accent: #d60000;
+      --sidebar-w: 240px;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: var(--surface); color: var(--black); }
+    .admin-root { display: flex; min-height: 100vh; }
+
+    .admin-side {
+      width: var(--sidebar-w);
+      background: #0f0f0f;
+      color: #ccc;
+      padding: 20px 12px 40px;
+      flex-shrink: 0;
+      position: sticky; top: 0; height: 100vh; overflow-y: auto;
+    }
+    .admin-side .logo { font-size: 18px; font-weight: 700; color: #fff; margin-bottom: 24px; padding: 0 6px; letter-spacing: -0.03em; }
+    .admin-side .nav-section { font-size: 10px; text-transform: uppercase; letter-spacing: .1em; color: #555; padding: 14px 6px 4px; }
+    .admin-side button {
+      display: flex; align-items: center; gap: 8px;
+      width: 100%; text-align: left;
+      padding: 8px 10px; margin-bottom: 2px;
+      border-radius: 6px; border: none;
+      background: transparent; color: #bbb;
+      font-size: 13px; cursor: pointer; transition: background .15s, color .15s;
+    }
+    .admin-side button .icon { font-size: 15px; width: 20px; text-align: center; }
+    .admin-side button:hover { background: rgba(255,255,255,.07); color: #fff; }
+    .admin-side button.active { background: rgba(255,255,255,.13); color: #fff; }
+    .admin-side hr { border: none; border-top: 1px solid #222; margin: 12px 0; }
+
+    .admin-main { flex: 1; padding: 28px 28px 80px; overflow-x: auto; min-width: 0; }
+    .admin-panel { display: none; }
+    .admin-panel.active { display: block; }
+    .page-title { font-size: 24px; font-weight: 700; margin-bottom: 20px; letter-spacing: -.03em; }
+
+    .card {
+      background: #fff; border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px; margin-bottom: 18px;
+    }
+    .card h3 { font-size: 14px; font-weight: 600; margin-bottom: 14px; color: #444; text-transform: uppercase; letter-spacing: .05em; }
+    .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 18px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 14px; }
+    .muted { color: #888; font-size: 13px; line-height: 1.5; }
+
+    .kpi { background:#fff; border:1px solid var(--border); border-radius:10px; padding:18px; }
+    .kpi .kpi-label { font-size:11px; text-transform:uppercase; letter-spacing:.08em; color:#999; margin-bottom:6px; }
+    .kpi .kpi-value { font-size:22px; font-weight:700; letter-spacing:-.03em; }
+    .kpi .kpi-sub { font-size:12px; color:#aaa; margin-top:4px; }
+
+    .form-row { margin-bottom: 12px; }
+    .form-row label { display: block; font-size: 12px; font-weight: 600; color: #555; margin-bottom: 4px; }
+    input, select, textarea {
+      padding: 8px 10px; border-radius: 6px; border: 1px solid var(--border);
+      font-size: 13px; width: 100%; background: #fff; color: var(--black);
+      transition: border-color .15s;
+    }
+    input:focus, select:focus, textarea:focus { outline: none; border-color: var(--black); }
+    textarea { resize: vertical; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+
+    .btn-primary {
+      background: var(--black); color: #fff; border: none;
+      padding: 9px 18px; border-radius: 6px; font-size: 13px;
+      font-weight: 600; cursor: pointer; transition: background .15s;
+    }
+    .btn-primary:hover { background: #333; }
+    .btn-ghost { background: #fff; border: 1px solid var(--border); padding: 7px 14px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+    .btn-ghost:hover { border-color: #999; }
+    .btn-danger { background: var(--accent); color: #fff; border: none; padding: 6px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+    .btn-sm { background: #fff; border: 1px solid var(--border); padding: 6px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; }
+    .btn-sm:hover { background: #f5f5f5; }
+    .btn-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+    .pill-ghost { background: #fff; border: 1px solid var(--border); padding: 5px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; font-weight: 500; }
+    .pill-ghost:hover { background: #f0f0f0; border-color: #999; }
+    .pill-danger { background: var(--accent); color: #fff; border: none; padding: 5px 12px; border-radius: 999px; font-size: 12px; cursor: pointer; font-weight: 500; }
+    .pill-danger:hover { opacity: .85; }
+    .card.editing { border-color: #111; box-shadow: 0 0 0 3px rgba(0,0,0,.08); }
+
+    .table-wrap { overflow-x: auto; }
+    table.admin-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    table.admin-table th {
+      padding: 9px 8px; border-bottom: 2px solid var(--border);
+      text-align: left; font-size: 11px; text-transform: uppercase;
+      letter-spacing: .06em; color: #888; font-weight: 600;
+    }
+    table.admin-table td { padding: 9px 8px; border-bottom: 1px solid #f0f0f0; vertical-align: middle; }
+    table.admin-table tr:hover td { background: #fafafa; }
+    .badge { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 11px; font-weight: 600; }
+    .badge-ok { background: #e6f4ea; color: #2d6a4f; }
+    .badge-warn { background: #fff3cd; color: #856404; }
+    .badge-danger { background: #fde8e8; color: #c62828; }
+    .badge-info { background: #e8f0fe; color: #1a56db; }
+
+    .subtab-bar {
+      display: flex; gap: 4px; margin-bottom: 18px;
+      border-bottom: 2px solid var(--border); padding-bottom: 0;
+    }
+    .subtab-btn {
+      background: transparent; border: none; border-bottom: 2px solid transparent;
+      margin-bottom: -2px; padding: 8px 14px; font-size: 13px; font-weight: 500;
+      color: #888; cursor: pointer; border-radius: 0; transition: color .15s, border-color .15s;
+    }
+    .subtab-btn:hover { color: var(--black); }
+    .subtab-btn.active { color: var(--black); border-bottom-color: var(--black); }
+    .subpanel { display: none; }
+    .subpanel.active { display: block; }
+
+    .chart-wrap { max-width: 780px; margin-top: 16px; }
+
+    details.rep-acc { margin-bottom: 8px; border: 1px solid var(--border); border-radius: 8px; padding: 10px 14px; background: #fff; }
+    details.rep-acc summary { cursor: pointer; font-weight: 600; font-size: 14px; }
+    details.rep-acc[open] summary { margin-bottom: 10px; }
+
+    .status-pendiente { color: #b45309; background: #fef3c7; }
+    .status-pagado { color: #065f46; background: #d1fae5; }
+    .status-enviado { color: #1e40af; background: #dbeafe; }
+    .status-entregado { color: #374151; background: #f3f4f6; }
+
+    .sync-banner {
+      display: flex; align-items: center; gap: 10px;
+      background: #fffbeb; border: 1px solid #fbbf24;
+      border-radius: 8px; padding: 10px 16px; margin-bottom: 16px;
+      font-size: 13px; color: #78350f;
+    }
+
+    .conta-kpi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; margin-bottom: 18px; }
+    .conta-kpi { border-radius: 10px; padding: 16px; }
+    .conta-ingreso { background: #e6f4ea; border: 1px solid #a7d7b3; }
+    .conta-egreso { background: #fde8e8; border: 1px solid #f5a5a5; }
+    .conta-balance { background: #e8f0fe; border: 1px solid #93b4f7; }
+    .conta-kpi .k-label { font-size: 11px; text-transform: uppercase; letter-spacing: .08em; color: #555; }
+    .conta-kpi .k-val { font-size: 20px; font-weight: 700; margin-top: 4px; }
+
+    @media (max-width: 860px) {
+      .admin-root { flex-direction: column; }
+      .admin-side { width: 100%; height: auto; position: static; display: flex; flex-wrap: wrap; gap: 4px; padding: 12px; }
+      .admin-side .nav-section { display: none; }
+      .admin-side button { width: auto; flex: 1 1 auto; }
+      .admin-main { padding: 16px 12px 60px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-root">
+    <aside class="admin-side">
+      <div class="logo">Winner Admin</div>
+
+      <div class="nav-section">Catálogo</div>
+      <button type="button" data-tab="productos" class="active"><span class="icon"></span>Productos</button>
+      <button type="button" data-tab="inventario"><span class="icon"></span>Inventario</button>
+      <button type="button" data-tab="ofertas"><span class="icon"></span>Ofertas</button>
+      <button type="button" data-tab="alertas"><span class="icon"></span>Alertas stock</button>
+
+      <div class="nav-section">Operaciones</div>
+      <button type="button" data-tab="ventas"><span class="icon"></span>Ventas</button>
+      <button type="button" data-tab="pedidos"><span class="icon"></span>Pedidos clientes</button>
+      <button type="button" data-tab="devoluciones"><span class="icon">↩</span>Devoluciones</button>
+      <button type="button" data-tab="provs"><span class="icon"></span>Proveedores</button>
+
+      <div class="nav-section">Finanzas</div>
+      <button type="button" data-tab="conta"><span class="icon"></span>Contabilidad</button>
+      <button type="button" data-tab="compras"><span class="icon"></span>Compras</button>
+      <button type="button" data-tab="reportes"><span class="icon"></span>Reportes</button>
+
+      <div class="nav-section">Administración</div>
+      <button type="button" data-tab="usuarios"><span class="icon"></span>Usuarios</button>
+
+      <hr>
+      <button type="button" onclick="location.href='index.html'"><span class="icon"></span>Ver tienda</button>
+      <button type="button" id="adminLogout"><span class="icon"></span>Salir</button>
+    </aside>
+
+    <div class="admin-main">
+
+      <!-- PRODUCTOS -->
+      <section class="admin-panel active" data-panel="productos">
+        <h1 class="page-title">Gestión de productos</h1>
+        <div class="card">
+          <div class="grid-2">
+            <div>
+              <h3>Nuevo / Editar producto</h3>
+              <input type="hidden" id="prodId">
+              <div class="form-grid">
+                <div class="form-row"><label>Nombre</label><input id="prodNombre" placeholder="Ej: Air Max 90"></div>
+                <div class="form-row"><label>Precio (COP)</label><input id="prodPrecio" type="number" step="0.01" placeholder="350000"></div>
+                <div class="form-row"><label>Categoría</label><select id="prodCat"></select></div>
+                <div class="form-row"><label>Marca</label><select id="prodMarca"></select></div>
+                <div class="form-row"><label>Color</label>
+                  <select id="prodColor">
+                    <option value="">Sin especificar</option>
+                    <option>Negro</option><option>Blanco</option><option>Rojo</option>
+                    <option>Azul</option><option>Gris</option><option>Verde</option><option>Beige</option>
+                  </select>
+                </div>
+                <div class="form-row"><label>Talla</label>
+                  <select id="prodTalla">
+                    <option value="">Sin especificar</option>
+                    <option>34</option><option>35</option><option>36</option><option>37</option>
+                    <option>38</option><option>39</option><option>40</option><option>41</option>
+                    <option>42</option><option>43</option><option>44</option>
+                  </select>
+                </div>
+                <div class="form-row"><label>Stock inicial (solo nuevo)</label><input id="prodStock" type="number" placeholder="0"></div>
+                <div class="form-row"><label>URL imagen</label><input id="prodImg" placeholder="https://..."></div>
+              </div>
+              <div class="form-row"><label>Descripción</label><textarea id="prodDesc" rows="2" placeholder="Descripción del producto"></textarea></div>
+              <div class="form-row"><label><input type="checkbox" id="prodEstado" checked> Producto activo</label></div>
+              <div class="btn-row">
+                <button type="button" class="btn-primary" id="prodSave">Guardar</button>
+                <button type="button" class="btn-ghost" id="prodClear">Limpiar</button>
+              </div>
+            </div>
+            <div class="muted">
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Listado de productos</h3>
+          <div class="table-wrap" id="prodTableWrap">Cargando…</div>
+        </div>
+      </section>
+
+      <!-- INVENTARIO -->
+      <section class="admin-panel" data-panel="inventario">
+        <h1 class="page-title">Inventario en tiempo real</h1>
+        <div class="card">
+          <h3>Registrar entrada de mercancía</h3>
+          <div class="grid-2">
+            <div>
+              <div class="form-grid">
+                <div class="form-row"><label>Producto</label><select id="entradaProd"></select></div>
+                <div class="form-row"><label>Cantidad a ingresar</label><input id="entradaCant" type="number" placeholder="0" min="1"></div>
+              </div>
+              <div class="btn-row">
+                <button type="button" class="btn-primary" id="entradaBtn">Registrar entrada</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Estado actual del inventario</h3>
+          <div class="table-wrap" id="invTableWrap">Cargando…</div>
+        </div>
+      </section>
+
+      <!-- OFERTAS -->
+      <section class="admin-panel" data-panel="ofertas">
+        <h1 class="page-title">Ofertas y descuentos</h1>
+        <div class="card">
+          <div class="grid-2">
+            <div>
+              <h3>Nueva oferta</h3>
+              <div class="form-grid">
+                <div class="form-row"><label>Producto</label><select id="ofertaProd"></select></div>
+                <div class="form-row"><label>% descuento</label><input id="ofertaPct" type="number" step="0.01" placeholder="20"></div>
+                <div class="form-row"><label>Inicio</label><input type="datetime-local" id="ofertaIni"></div>
+                <div class="form-row"><label>Fin</label><input type="datetime-local" id="ofertaFin"></div>
+              </div>
+              <div class="form-row"><label><input type="checkbox" id="ofertaAct" checked> Activa</label></div>
+              <button type="button" class="btn-primary" id="ofertaSave">Guardar oferta</button>
+            </div>
+            <p class="muted">Una oferta por producto. El cliente verá precio tachado, porcentaje y precio final en el catálogo, descuentos e index.</p>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Ofertas activas</h3>
+          <div class="table-wrap" id="ofertaTableWrap">Cargando…</div>
+        </div>
+      </section>
+
+      <!-- ALERTAS -->
+      <section class="admin-panel" data-panel="alertas">
+        <h1 class="page-title">Alertas de baja disponibilidad</h1>
+        <div class="card table-wrap" id="alertasWrap">Cargando…</div>
+        <div class="card" id="alertaPedidoPanel" style="display:none;">
+          <h3>Pedido a proveedor desde alerta</h3>
+          <input type="hidden" id="alertaProdId">
+          <p class="muted" id="alertaProdNombre" style="margin-bottom:12px;"></p>
+          <div class="form-grid">
+            <div class="form-row"><label>Proveedor</label><select id="alertaProvSelect"></select></div>
+            <div class="form-row"><label>Cantidad a pedir</label><input id="alertaCant" type="number" placeholder="0"></div>
+            <div class="form-row"><label>Precio compra unitario (COP)</label><input id="alertaPrecioUnit" type="number" step="0.01" placeholder="0"></div>
+          </div>
+          <div class="btn-row">
+            <button type="button" class="btn-primary" id="alertaPedidoBtn">Enviar pedido</button>
+            <button type="button" class="btn-ghost" id="alertaPedidoCancel">Cancelar</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- VENTAS -->
+      <section class="admin-panel" data-panel="ventas">
+        <h1 class="page-title">Gestión de ventas</h1>
+        <nav class="subtab-bar" data-group="ventas">
+          <button type="button" class="subtab-btn active" data-subtab="nueva-venta">Nueva venta</button>
+          <button type="button" class="subtab-btn" data-subtab="historial-ventas">Historial</button>
+          <button type="button" class="subtab-btn" data-subtab="facturas">Facturas</button>
+        </nav>
+
+        <div class="subpanel active" data-subpanel="nueva-venta" data-group="ventas">
+          <div class="card">
+            <h3>Crear nueva venta</h3>
+            <div class="form-grid">
+              <div class="form-row"><label>Cliente</label>
+                <select id="ventaCliente">
+                  <option value="">Seleccionar cliente registrado…</option>
+                </select>
+              </div>
+              <div class="form-row"><label>O nombre cliente (venta rápida)</label>
+                <input id="ventaClienteNombre" placeholder="Nombre del cliente">
+              </div>
+              <div class="form-row"><label>Método de pago</label>
+                <select id="ventaMetodoPago">
+                  <option value="efectivo">Efectivo</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="tarjeta">Tarjeta</option>
+                </select>
+              </div>
+              <div class="form-row"><label>Descuento adicional (%)</label>
+                <input id="ventaDescuento" type="number" placeholder="0" min="0" max="100" value="0">
+              </div>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Agregar productos a la venta</h3>
+            <div class="form-grid">
+              <div class="form-row"><label>Producto</label><select id="ventaProdSelect"></select></div>
+              <div class="form-row"><label>Cantidad</label><input id="ventaCantidad" type="number" placeholder="1" min="1" value="1"></div>
+            </div>
+            <div class="btn-row" style="margin-top:8px;">
+              <button type="button" class="btn-ghost" id="ventaAgregarBtn">Agregar al carrito</button>
+            </div>
+            <div style="margin-top:14px;" id="ventaCarritoWrap">
+              <p class="muted">Sin productos agregados.</p>
+            </div>
+          </div>
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+              <div>
+                <p style="font-size:13px;color:#888;">Total bruto: <strong id="ventaTotalBruto">$0</strong></p>
+                <p style="font-size:15px;font-weight:700;margin-top:4px;">Total con descuento: <span id="ventaTotalFinal" style="color:#111;">$0</span></p>
+              </div>
+              <div class="btn-row">
+                <button type="button" class="btn-primary" id="ventaConfirmarBtn">Confirmar venta</button>
+                <button type="button" class="btn-ghost" id="ventaCancelarBtn">Cancelar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="subpanel" data-subpanel="historial-ventas" data-group="ventas">
+          <div class="card">
+            <h3>Historial de ventas</h3>
+            <div class="table-wrap" id="historialVentasWrap">Cargando…</div>
+          </div>
+        </div>
+
+        <div class="subpanel" data-subpanel="facturas" data-group="ventas">
+          <div class="card">
+            <h3>Facturas generadas</h3>
+            <div class="table-wrap" id="facturasWrap">Cargando…</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PEDIDOS -->
+      <section class="admin-panel" data-panel="pedidos">
+        <h1 class="page-title">Pedidos y logística</h1>
+        <div class="card table-wrap" id="pedidosAdminWrap">Cargando…</div>
+      </section>
+
+      <!-- DEVOLUCIONES -->
+      <section class="admin-panel" data-panel="devoluciones">
+        <h1 class="page-title">Devoluciones de clientes</h1>
+        <div class="card table-wrap" id="devolucionesAdminWrap">Cargando…</div>
+      </section>
+
+      <!-- PROVEEDORES -->
+      <section class="admin-panel" data-panel="provs">
+        <h1 class="page-title">Proveedores</h1>
+        <nav class="subtab-bar" data-group="provs">
+          <button type="button" class="subtab-btn active" data-subtab="directorio">Directorio</button>
+          <button type="button" class="subtab-btn" data-subtab="asociar">Asociar a productos</button>
+          <button type="button" class="subtab-btn" data-subtab="pedidos-prov">Pedidos de compra</button>
+        </nav>
+
+        <div class="subpanel active" data-subpanel="directorio" data-group="provs">
+          <div class="card grid-2">
+            <div>
+              <h3>Registrar / editar proveedor</h3>
+              <input type="hidden" id="provId">
+              <div class="form-grid">
+                <div class="form-row"><label>Nombre</label><input id="provNombre" placeholder="Nombre del proveedor"></div>
+                <div class="form-row"><label>Teléfono</label><input id="provTel" placeholder="Teléfono"></div>
+                <div class="form-row"><label>Correo</label><input id="provCorreo" placeholder="correo@ejemplo.com"></div>
+                <div class="form-row"><label>Dirección</label><input id="provDir" placeholder="Dirección"></div>
+              </div>
+              <div class="btn-row">
+                <button type="button" class="btn-primary" id="provSave">Guardar</button>
+                <button type="button" class="btn-ghost" id="provClear">Nuevo</button>
+              </div>
+            </div>
+            <p class="muted">Registro y mantenimiento del directorio de proveedores.</p>
+          </div>
+          <div class="card table-wrap" id="provTableWrap">Cargando…</div>
+        </div>
+
+        <div class="subpanel" data-subpanel="asociar" data-group="provs">
+          <div class="card grid-2">
+            <div>
+              <h3>Asociar producto a proveedor</h3>
+              <div class="form-row"><label>Producto</label><select id="asocProd"></select></div>
+              <div class="form-row"><label>Proveedor</label><select id="asocProv"></select></div>
+              <div class="btn-row" style="margin-top:12px;">
+                <button type="button" class="btn-primary" id="asocBtn">Asociar</button>
+              </div>
+            </div>
+            <div id="asocList" class="muted">Cargando…</div>
+          </div>
+        </div>
+
+        <div class="subpanel" data-subpanel="pedidos-prov" data-group="provs">
+          <p class="muted" style="margin-bottom:12px;">Marca como recibida cuando la mercancía ingrese; el inventario se actualiza automáticamente.</p>
+          <div class="card table-wrap" id="comprasProvWrap">Cargando…</div>
+        </div>
+      </section>
+
+      <!-- CONTABILIDAD -->
+      <section class="admin-panel" data-panel="conta">
+        <h1 class="page-title">Módulo contable</h1>
+
+        <div class="conta-kpi-grid" id="contaResumen">
+          <div class="conta-kpi conta-ingreso kpi"><div class="k-label">Total Ingresos</div><div class="k-val" id="contaKpiIngresos">—</div></div>
+          <div class="conta-kpi conta-egreso kpi"><div class="k-label">Total Egresos</div><div class="k-val" id="contaKpiEgresos">—</div></div>
+          <div class="conta-kpi conta-balance kpi"><div class="k-label">Balance neto</div><div class="k-val" id="contaKpiBalance">—</div></div>
+          <div class="conta-kpi kpi" style="background:#f5f5f5;border:1px solid var(--border);"><div class="k-label">Movimientos</div><div class="k-val" id="contaKpiMov">—</div></div>
+        </div>
+
+        <nav class="subtab-bar" data-group="conta">
+          <button type="button" class="subtab-btn active" data-subtab="mov-manual">Nuevo movimiento</button>
+          <button type="button" class="subtab-btn" data-subtab="movimientos">Todos los movimientos</button>
+          <button type="button" class="subtab-btn" data-subtab="caja">Estado de caja</button>
+        </nav>
+
+        <div class="subpanel active" data-subpanel="mov-manual" data-group="conta">
+          <div class="card">
+            <h3>Registrar ingreso de dinero a la empresa</h3>
+            <div class="form-grid">
+              <div class="form-row"><label>Fecha</label><input type="datetime-local" id="movFecha"></div>
+              <div class="form-row"><label>Tipo</label>
+                <select id="movTipo">
+                  <option value="ingreso">Ingreso</option>
+                  <option value="egreso">Egreso operativo</option>
+                </select>
+              </div>
+              <div class="form-row"><label>Concepto</label><input id="movConcepto" placeholder="Ej: Venta directa, arriendo, servicios…"></div>
+              <div class="form-row"><label>Cliente (opcional)</label><input id="movCliente" placeholder="Nombre del cliente"></div>
+              <div class="form-row"><label>Valor (COP)</label><input id="movMonto" type="number" step="0.01" placeholder="0" min="0"></div>
+              <div class="form-row"><label>Método de pago</label>
+                <select id="movMetodoPago">
+                  <option value="efectivo">Efectivo</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="tarjeta">Tarjeta</option>
+                </select>
+              </div>
+            </div>
+            <div class="form-row" style="margin-top:8px;"><label>Referencia / Número de factura (opcional)</label><input id="movRef" placeholder="REF-001"></div>
+            <div class="form-row"><label>Observaciones</label><textarea id="movObs" rows="2" placeholder="Notas adicionales sobre este movimiento…"></textarea></div>
+            <div class="btn-row" style="margin-top:6px;">
+              <button type="button" class="btn-primary" id="movBtn">Registrar movimiento</button>
+            </div>
+            <p class="muted" style="margin-top:8px;font-size:11px;">Los registros contables no se pueden eliminar sin autorización del administrador. Los valores negativos no están permitidos.</p>
+          </div>
+        </div>
+
+        <div class="subpanel" data-subpanel="movimientos" data-group="conta">
+          <div class="card">
+            <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+              <h3 style="margin:0;">Historial de movimientos contables</h3>
+              <div style="display:flex;gap:8px;">
+                <select id="movFiltroTipo" style="width:auto;">
+                  <option value="">Todos</option>
+                  <option value="ingreso">Ingresos</option>
+                  <option value="egreso">Egresos</option>
+                </select>
+                <select id="movFiltroMetodo" style="width:auto;">
+                  <option value="">Todos los métodos</option>
+                  <option value="efectivo">Efectivo</option>
+                  <option value="transferencia">Transferencia</option>
+                  <option value="tarjeta">Tarjeta</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-wrap" id="movTableWrap">Cargando…</div>
+          </div>
+        </div>
+
+        <div class="subpanel" data-subpanel="caja" data-group="conta">
+          <div class="grid-2">
+            <div class="card">
+              <h3>Efectivo en caja</h3>
+              <div id="cajaEfectivo" class="muted">Cargando…</div>
+            </div>
+            <div class="card">
+              <h3>Ingresos por transferencia</h3>
+              <div id="cajaTrans" class="muted">Cargando…</div>
+            </div>
+            <div class="card">
+              <h3>Ingresos por tarjeta</h3>
+              <div id="cajaTarjeta" class="muted">Cargando…</div>
+            </div>
+            <div class="card">
+              <h3>Resumen del día</h3>
+              <div id="cajaHoy" class="muted">Cargando…</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- COMPRAS A PROVEEDORES -->
+      <section class="admin-panel" data-panel="compras">
+        <h1 class="page-title">Gestión de compras a proveedores</h1>
+        <div class="card">
+          <h3>Registrar nueva compra</h3>
+          <div class="form-grid">
+            <div class="form-row"><label>Número de factura</label><input id="compraFactura" placeholder="FAC-0001"></div>
+            <div class="form-row"><label>Proveedor</label><select id="compraProveedor"></select></div>
+            <div class="form-row"><label>Fecha</label><input type="date" id="compraFecha"></div>
+          </div>
+          <div style="margin-top:16px;">
+            <h3>Productos comprados</h3>
+            <div class="form-grid">
+              <div class="form-row"><label>Producto</label><select id="compraProdSelect"></select></div>
+              <div class="form-row"><label>Cantidad</label><input id="compraCantidad" type="number" placeholder="1" min="1" value="1"></div>
+              <div class="form-row"><label>Precio compra unitario (COP)</label><input id="compraPrecioUnit" type="number" step="0.01" placeholder="0"></div>
+            </div>
+            <div class="btn-row" style="margin-top:8px;">
+              <button type="button" class="btn-ghost" id="compraAgregarItemBtn">Agregar producto</button>
+            </div>
+            <div style="margin-top:12px;" id="compraItemsWrap">
+              <p class="muted">Sin productos agregados.</p>
+            </div>
+          </div>
+          <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+            <p style="font-size:15px;font-weight:700;">Total compra: <span id="compraTotalLabel">$0</span></p>
+            <button type="button" class="btn-primary" id="compraGuardarBtn">Registrar compra</button>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Historial de compras</h3>
+          <div class="table-wrap" id="historialComprasWrap">Cargando…</div>
+        </div>
+      </section>
+
+      <!-- REPORTES -->
+      <section class="admin-panel" data-panel="reportes">
+        <h1 class="page-title">Reportes y exportación</h1>
+        <div class="card">
+          <div id="repTipoMenu"></div>
+          <div class="chart-wrap"><canvas id="repChart" height="140"></canvas></div>
+          <div id="repTablaWrap" style="margin-top:16px;overflow:auto;"></div>
+          <div class="btn-row" style="margin-top:16px;">
+            <button type="button" class="btn-primary" id="expPdf">Exportar PDF</button>
+            <button type="button" class="btn-ghost" id="expXlsx">Exportar Excel</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- USUARIOS -->
+      <section class="admin-panel" data-panel="usuarios">
+        <h1 class="page-title">Usuarios</h1>
+        <div class="card table-wrap" id="usuariosWrap">Cargando…</div>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="js/dashboard-admin.js"></script>
+  <script>
+  // Al cargar el dashboard, reemplazar la entrada del historial
+  // para que no se pueda volver con el botón adelante sin loguearse.
+  history.replaceState(null, '');
+
+  // Navegación de subtabs por grupo
+  function initSubtabs(group) {
+    const btns = document.querySelectorAll(`.subtab-bar[data-group="${group}"] .subtab-btn`);
+    const panels = document.querySelectorAll(`.subpanel[data-group="${group}"]`);
+    btns.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const target = btn.dataset.subtab;
+        btns.forEach(b => b.classList.toggle('active', b === btn));
+        panels.forEach(p => p.classList.toggle('active', p.dataset.subpanel === target));
+      });
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', () => {
+    initSubtabs('ventas');
+    initSubtabs('provs');
+    initSubtabs('conta');
+  });
+</script>
+</body>
+</html>

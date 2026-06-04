@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Producto — Winner Shoes</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
+body{background:#fff;color:#111;overflow-x:hidden;}
+.top-bar{height:38px;background:#f5f5f5;display:flex;justify-content:space-between;align-items:center;padding:0 50px;font-size:13px;}
+.top-bar a{text-decoration:none;color:#111;margin-left:20px;}
+header{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e5e5e5;}
+.navbar{height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 50px;}
+.logo{font-size:34px;font-weight:900;letter-spacing:2px;text-decoration:none;color:#111;}
+.nav-menu{display:flex;gap:35px;}
+.nav-menu a{text-decoration:none;color:#111;font-size:17px;font-weight:600;position:relative;}
+.nav-menu a::after{content:'';position:absolute;left:0;bottom:-6px;width:0%;height:2px;background:#111;transition:.3s;}
+.nav-menu a:hover::after{width:100%;}
+.nav-icons{display:flex;align-items:center;gap:20px;}
+.search-box{background:#f5f5f5;border-radius:30px;padding:10px 18px;display:flex;align-items:center;gap:10px;}
+.search-box input{border:none;background:transparent;outline:none;width:180px;font-size:15px;}
+.icon-btn{border:none;background:none;font-size:22px;cursor:pointer;}
+
+/* DETALLE */
+.breadcrumb{padding:20px 60px;font-size:13px;color:#777;}
+.breadcrumb a{text-decoration:none;color:#777;}
+.breadcrumb a:hover{color:#111;}
+.detail-wrap{max-width:1200px;margin:0 auto;padding:20px 60px 80px;display:grid;grid-template-columns:1fr 1fr;gap:60px;}
+.detail-media{background:#f6f6f6;aspect-ratio:1/1;border-radius:12px;overflow:hidden;}
+.detail-media img{width:100%;height:100%;object-fit:cover;}
+.detail-info{display:flex;flex-direction:column;justify-content:center;}
+.detail-marca{font-size:14px;color:#777;text-transform:uppercase;letter-spacing:2px;margin-bottom:10px;}
+.detail-nombre{font-size:38px;font-weight:900;margin-bottom:8px;line-height:1.15;}
+.detail-categoria{color:#999;margin-bottom:20px;font-size:16px;}
+.detail-precio{font-size:32px;font-weight:900;margin-bottom:6px;}
+.detail-precio-old{font-size:18px;text-decoration:line-through;color:#999;margin-bottom:4px;}
+.detail-badge{display:inline-block;background:#d60000;color:#fff;padding:4px 12px;border-radius:20px;font-size:13px;font-weight:bold;margin-bottom:16px;}
+.detail-desc{font-size:16px;line-height:1.7;color:#555;margin-bottom:24px;}
+.detail-stock{font-size:14px;color:#555;margin-bottom:20px;}
+.qty-row{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.qty-row label{font-weight:bold;font-size:15px;}
+.qty-row input{width:70px;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:16px;text-align:center;}
+.btn-comprar{width:100%;background:#000;color:#fff;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:bold;cursor:pointer;transition:.3s;margin-bottom:12px;}
+.btn-comprar:hover{background:#333;}
+.btn-favorito{width:100%;background:#f1f1f1;color:#111;border:none;padding:16px;border-radius:30px;font-size:17px;font-weight:bold;cursor:pointer;transition:.3s;}
+.btn-favorito:hover{background:#e0e0e0;}
+.loading{text-align:center;padding:80px;color:#999;font-size:18px;}
+
+footer{background:#111;color:#fff;padding:70px 60px;margin-top:70px;}
+.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;}
+.footer-grid h4{margin-bottom:20px;}
+.footer-grid a{display:block;text-decoration:none;color:#cfcfcf;margin-bottom:12px;}
+.footer-bottom{margin-top:40px;border-top:1px solid #333;padding-top:20px;color:#999;}
+
+@media(max-width:900px){.detail-wrap{grid-template-columns:1fr;}.breadcrumb,.detail-wrap{padding-left:20px;padding-right:20px;}}
+@media(max-width:700px){.navbar{padding:0 20px;}.nav-menu{display:none;}.search-box input{width:100px;}.detail-nombre{font-size:28px;}.detail-precio{font-size:26px;}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div><i class="fa-solid fa-shoe-prints"></i></div>
+  <div id="topBarLinks">
+    <a href="registro.html">Únete</a>
+    <a href="login.html">Iniciar sesión</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">WINNER SHOES</a>
+    <nav class="nav-menu">
+      <a href="novedades.html">Novedades</a>
+      <a href="hombre.html">Hombre</a>
+      <a href="mujer.html">Mujer</a>
+      <a href="ninos.html">Niños</a>
+      <a href="deporte.html">Deporte</a>
+      <a href="descuentos.html">Descuentos</a>
+    </nav>
+    <div class="nav-icons">
+      <form class="search-box" onsubmit="buscar(event)">
+        <i class="fa-solid fa-magnifying-glass" style="cursor:pointer;"></i>
+        <input type="text" id="searchInput" placeholder="Buscar">
+      </form>
+      <button class="icon-btn" onclick="irLogin()"><i class="fa-regular fa-heart"></i></button>
+      <button class="icon-btn" onclick="irLogin()"><i class="fa-solid fa-bag-shopping"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb" id="breadcrumb">
+  <a href="index.html">Inicio</a> · <a href="catalogo.html">Catálogo</a> · <span id="breadcrumbNombre">Producto</span>
+</div>
+
+<!-- DETALLE -->
+<div id="root"><div class="loading"><i class="fa-solid fa-spinner fa-spin"></i> Cargando producto...</div></div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><h4>Productos</h4><a href="catalogo.html">Catálogo</a><a href="novedades.html">Novedades</a><a href="descuentos.html">Ofertas</a></div>
+    <div><h4>Ayuda</h4><a href="#">Estado del pedido</a><a href="#">Envíos</a><a href="#">Devoluciones</a></div>
+    <div><h4>Empresa</h4><a href="#">Acerca de</a><a href="#">Noticias</a></div>
+    <div><h4>Cuenta</h4><a href="login.html">Iniciar sesión</a><a href="registro.html">Registrarse</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 Winner Shoes</div>
+</footer>
+
+<script>
+const fmt = n => new Intl.NumberFormat('es-CO', { style:'currency', currency:'COP', maximumFractionDigits:0 }).format(Number(n)||0);
+const CART_KEY = 'carrito_calzado';
+
+function getCart() { try { return JSON.parse(localStorage.getItem(CART_KEY)) || []; } catch { return []; } }
+function setCart(items) { localStorage.setItem(CART_KEY, JSON.stringify(items)); }
+
+function buscar(e) {
+  e.preventDefault();
+  const q = document.getElementById('searchInput').value.trim();
+  window.location.href = 'catalogo.html' + (q ? '?q=' + encodeURIComponent(q) : '');
+}
+
+function irLogin() {
+  window.location.href = 'login.html?next=' + encodeURIComponent('dashboard_cliente.html');
+}
+
+async function cargarSesion() {
+  try {
+    const r = await fetch('/api/me', { credentials: 'same-origin' });
+    const d = await r.json();
+    if (d.user) {
+      const links = document.getElementById('topBarLinks');
+      links.innerHTML = `
+        <span style="font-weight:bold;">Hola, ${d.user.nombre.split(' ')[0]}</span>
+        <a href="${d.user.rol === 'admin' ? 'dashboard_admin.html' : 'dashboard_cliente.html'}" style="margin-left:20px;">Mi cuenta</a>
+        <a href="#" onclick="cerrarSesion(event)" style="margin-left:20px;">Salir</a>`;
+    }
+  } catch(_) {}
+}
+
+async function cerrarSesion(e) {
+  e.preventDefault();
+  await fetch('/api/logout', { method:'POST' });
+  window.location.reload();
+}
+
+async function requireUser() {
+  const r = await fetch('/api/me', { credentials:'same-origin' });
+  const d = await r.json();
+  if (!d.user) {
+    window.location.href = 'login.html?next=' + encodeURIComponent(location.pathname + location.search);
+    return null;
+  }
+  return d.user;
+}
+
+async function fetchStock(id) {
+  try {
+    const r = await fetch('/api/productos/' + id + '/stock', { credentials:'same-origin' });
+    if (!r.ok) return 0;
+    return Number((await r.json()).cantidad || 0);
+  } catch { return 0; }
+}
+
+async function addToCart(p, qty) {
+  const user = await requireUser();
+  if (!user) return;
+  const max = await fetchStock(p.id_producto);
+  const q = Math.min(max, Math.max(1, Number(qty) || 1));
+  if (max <= 0) { alert('No hay unidades disponibles.'); return; }
+  const precioUnit = Number(p.precio_venta ?? p.precio_lista ?? p.precio);
+  const cart = getCart();
+  const existing = cart.find(x => x.id_producto === p.id_producto);
+  if (existing) { existing.cantidad = Math.min(max, Number(existing.cantidad) + q); existing.stock = max; existing.precio = precioUnit; }
+  else cart.push({ id_producto: p.id_producto, nombre: p.nombre, precio: precioUnit, precio_lista: Number(p.precio_lista || p.precio), imagen: p.imagen, cantidad: q, stock: max });
+  setCart(cart);
+  alert('¡Añadido al carrito! Ve a tu cuenta para finalizar la compra.');
+}
+
+async function load() {
+  const root = document.getElementById('root');
+  const id = new URLSearchParams(location.search).get('id');
+  if (!id) { root.innerHTML = '<div class="loading">Producto no especificado. <a href="catalogo.html">Ver catálogo</a></div>'; return; }
+  try {
+    const r = await fetch('/api/productos/' + encodeURIComponent(id));
+    if (!r.ok) { root.innerHTML = '<div class="loading">Producto no encontrado. <a href="catalogo.html">Ver catálogo</a></div>'; return; }
+    const p = await r.json();
+    document.title = p.nombre + ' — Winner Shoes';
+    document.getElementById('breadcrumbNombre').textContent = p.nombre;
+
+    const venta = Number(p.precio_venta ?? p.precio_lista ?? p.precio);
+    const lista = Number(p.precio_lista ?? p.precio);
+    const pct = p.oferta_porcentaje ? Number(p.oferta_porcentaje) : null;
+    const tieneOferta = pct && pct > 0 && venta < lista;
+    const img = p.imagen || 'https://placehold.co/600x600?text=Sin+imagen';
+
+    root.innerHTML = `
+      <div class="detail-wrap">
+        <div class="detail-media">
+          <img src="${img}" alt="${p.nombre}" onerror="this.src='https://placehold.co/600x600?text=Sin+imagen'">
+        </div>
+        <div class="detail-info">
+          <div class="detail-marca">${p.marca || ''}</div>
+          <h1 class="detail-nombre">${p.nombre}</h1>
+          <div class="detail-categoria">${p.categoria || ''}</div>
+          ${tieneOferta ? `<div class="detail-precio-old">${fmt(lista)}</div><span class="detail-badge">-${pct}% OFF</span>` : ''}
+          <div class="detail-precio">${fmt(venta)}</div>
+          <p class="detail-desc">${p.descripcion || 'Calzado de alta calidad de la marca ' + (p.marca || '') + '.'}</p>
+          <div class="detail-stock" id="stockInfo">Inicia sesión para ver disponibilidad.</div>
+          <div class="qty-row">
+            <label>Cantidad</label>
+            <input type="number" id="qty" min="1" max="99" value="1">
+          </div>
+          <button class="btn-comprar" id="addBtn">Añadir al carrito</button>
+          <button class="btn-favorito" onclick="irLogin()"><i class="fa-regular fa-heart"></i> Guardar en favoritos</button>
+        </div>
+      </div>`;
+
+    document.getElementById('addBtn').onclick = () => addToCart(p, document.getElementById('qty').value);
+
+    // mostrar stock si ya hay sesión
+    fetch('/api/me', { credentials:'same-origin' }).then(r => r.json()).then(async d => {
+      if (d.user) {
+        const stock = await fetchStock(id);
+        const si = document.getElementById('stockInfo');
+        if (si) si.textContent = stock > 0 ? `Disponibles: ${stock} unidades` : 'Sin stock disponible';
+        const inp = document.getElementById('qty');
+        if (inp) inp.max = Math.max(1, stock);
+      }
+    });
+  } catch(e) {
+    root.innerHTML = '<div class="loading">Error al cargar el producto. <a href="catalogo.html">Ver catálogo</a></div>';
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  cargarSesion();
+  load();
+});
+</script>
+</body>
+</html>

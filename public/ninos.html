@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Niños | Winner Shoes</title>
+
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <style>
+
+    *{
+      margin:0;
+      padding:0;
+      box-sizing:border-box;
+      font-family:Arial, Helvetica, sans-serif;
+    }
+
+    body{
+      background:#fff;
+      color:#111;
+      overflow-x:hidden;
+    }
+
+    a{
+      text-decoration:none;
+      color:inherit;
+    }
+
+    img{
+      max-width:100%;
+      display:block;
+    }
+
+    button{
+      font-family:inherit;
+    }
+
+    /* =========================
+       TOP BAR
+    ========================== */
+
+    .top-bar{
+      height:40px;
+      background:#f5f5f5;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 45px;
+      font-size:13px;
+    }
+
+    .top-left{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      font-weight:bold;
+    }
+
+    .top-links{
+      display:flex;
+      gap:25px;
+    }
+
+    .top-links a:hover{
+      opacity:.7;
+    }
+
+    /* =========================
+       HEADER
+    ========================== */
+
+    .header{
+      position:sticky;
+      top:0;
+      z-index:999;
+      background:#fff;
+      border-bottom:1px solid #e5e5e5;
+    }
+
+    .header-container{
+      height:82px;
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding:0 45px;
+    }
+
+    .logo{
+      font-size:30px;
+      font-weight:900;
+      letter-spacing:2px;
+    }
+
+    .nav{
+      display:flex;
+      gap:35px;
+      font-weight:600;
+      font-size:16px;
+    }
+
+    .nav a{
+      position:relative;
+      padding-bottom:5px;
+    }
+
+    .nav a::after{
+      content:"";
+      position:absolute;
+      left:0;
+      bottom:0;
+      width:0;
+      height:2px;
+      background:#000;
+      transition:.3s;
+    }
+
+    .nav a:hover::after{
+      width:100%;
+    }
+
+    .tools{
+      display:flex;
+      align-items:center;
+      gap:18px;
+    }
+
+    .search-box{
+      background:#f5f5f5;
+      border-radius:40px;
+      padding:12px 18px;
+      display:flex;
+      align-items:center;
+      gap:10px;
+    }
+
+    .search-box input{
+      border:none;
+      background:none;
+      outline:none;
+      width:180px;
+      font-size:14px;
+    }
+
+    .icon-btn{
+      border:none;
+      background:none;
+      font-size:20px;
+      cursor:pointer;
+      transition:.3s;
+      position:relative;
+    }
+
+    .icon-btn:hover{
+      transform:scale(1.1);
+    }
+
+    .cart-count{
+      position:absolute;
+      top:-8px;
+      right:-10px;
+      width:18px;
+      height:18px;
+      border-radius:50%;
+      background:#ff4d00;
+      color:#fff;
+      font-size:11px;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+    }
+
+    /* =========================
+       HERO
+    ========================== */
+
+    .hero{
+      height:90vh;
+      background:
+      linear-gradient(to top, rgba(0,0,0,.55), rgba(0,0,0,.15)),
+      url('https://images.unsplash.com/photo-1516627145497-ae6968895b74?q=80&w=1800&auto=format&fit=crop');
+      background-size:cover;
+      background-position:center;
+      display:flex;
+      align-items:flex-end;
+      padding:70px;
+      color:#fff;
+    }
+
+    .hero-content{
+      max-width:620px;
+    }
+
+    .hero-content p{
+      font-size:14px;
+      margin-bottom:14px;
+      letter-spacing:3px;
+    }
+
+    .hero-content h1{
+      font-size:72px;
+      line-height:74px;
+      margin-bottom:25px;
+      font-weight:900;
+      text-transform:uppercase;
+    }
+
+    .hero-content span{
+      display:block;
+    }
+
+    .hero-btn{
+      padding:16px 34px;
+      border:none;
+      background:#000;
+      color:#fff;
+      border-radius:40px;
+      font-weight:bold;
+      font-size:15px;
+      cursor:pointer;
+      transition:.3s;
+      min-height:48px;
+    }
+
+    .hero-btn:hover{
+      transform:scale(1.05);
+      background:#fff;
+      color:#000;
+    }
+
+    .hero-btn:active{
+      transform:scale(.97);
+    }
+
+    /* =========================
+       SECTION
+    ========================== */
+
+    .section{
+      padding:85px 45px;
+    }
+
+    .section-title{
+      font-size:42px;
+      margin-bottom:45px;
+      font-weight:900;
+    }
+
+    /* =========================
+       CATEGORY GRID
+    ========================== */
+
+    .category-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:30px;
+    }
+
+    .category-card{
+      position:relative;
+      height:500px;
+      border-radius:22px;
+      overflow:hidden;
+      cursor:pointer;
+    }
+
+    .category-card img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:.5s;
+    }
+
+    .category-card:hover img{
+      transform:scale(1.08);
+      filter:brightness(.9);
+    }
+
+    .category-overlay{
+      position:absolute;
+      inset:0;
+      background:linear-gradient(to top, rgba(0,0,0,.75), transparent);
+      display:flex;
+      flex-direction:column;
+      justify-content:flex-end;
+      padding:35px;
+      color:#fff;
+    }
+
+    .category-overlay h3{
+      font-size:34px;
+      margin-bottom:18px;
+      font-weight:900;
+    }
+
+    .category-btn{
+      width:max-content;
+      border:none;
+      background:#fff;
+      color:#000;
+      padding:15px 28px;
+      border-radius:40px;
+      font-weight:bold;
+      cursor:pointer;
+      transition:.3s;
+      min-height:48px;
+    }
+
+    .category-btn:hover{
+      background:#000;
+      color:#fff;
+      transform:scale(1.04);
+    }
+
+    .category-btn:active{
+      transform:scale(.97);
+    }
+
+    /* =========================
+       PRODUCTS
+    ========================== */
+
+    .products-wrapper{
+      overflow-x:auto;
+      scroll-behavior:smooth;
+      display:flex;
+      gap:25px;
+      padding-bottom:10px;
+    }
+
+    .products-wrapper::-webkit-scrollbar{
+      display:none;
+    }
+
+    .product-card{
+      min-width:320px;
+      flex-shrink:0;
+      background:#fff;
+      border-radius:20px;
+      overflow:hidden;
+      transition:.3s;
+      position:relative;
+    }
+
+    .product-card:hover{
+      transform:translateY(-4px);
+    }
+
+    .product-image{
+      background:#f6f6f6;
+      aspect-ratio:1/1;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .product-image img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      transition:.5s;
+    }
+
+    .product-card:hover .product-image img{
+      transform:scale(1.05);
+    }
+
+    .product-icons{
+      position:absolute;
+      top:15px;
+      right:15px;
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+      z-index:10;
+    }
+
+    .product-icons button{
+      width:42px;
+      height:42px;
+      border:none;
+      border-radius:50%;
+      background:#fff;
+      cursor:pointer;
+      font-size:16px;
+      transition:.3s;
+      box-shadow:0 4px 10px rgba(0,0,0,.12);
+    }
+
+    .product-icons button:hover{
+      transform:scale(1.08);
+    }
+
+    .badge{
+      position:absolute;
+      top:15px;
+      left:15px;
+      background:#fff;
+      padding:7px 14px;
+      border-radius:30px;
+      font-size:12px;
+      font-weight:bold;
+    }
+
+    .product-info{
+      padding:20px;
+    }
+
+    .product-info h3{
+      font-size:19px;
+      margin-bottom:8px;
+    }
+
+    .product-info p{
+      color:#666;
+      margin-bottom:6px;
+    }
+
+    .price{
+      font-weight:bold;
+      color:#000 !important;
+      margin-top:12px;
+      font-size:18px;
+    }
+
+    /* =========================
+       MODAL LOGIN
+    ========================== */
+
+    .auth-modal{
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.65);
+      display:none;
+      align-items:center;
+      justify-content:center;
+      z-index:9999;
+      padding:20px;
+    }
+
+    .auth-box{
+      background:#fff;
+      width:100%;
+      max-width:520px;
+      border-radius:30px;
+      padding:50px 35px;
+      text-align:center;
+      animation:showModal .3s ease;
+    }
+
+    @keyframes showModal{
+      from{
+        opacity:0;
+        transform:translateY(20px);
+      }
+      to{
+        opacity:1;
+        transform:translateY(0);
+      }
+    }
+
+    .auth-box h2{
+      font-size:54px;
+      margin-bottom:20px;
+      font-weight:900;
+    }
+
+    .auth-box p{
+      color:#666;
+      line-height:1.6;
+      margin-bottom:35px;
+      font-size:17px;
+    }
+
+    .auth-actions{
+      display:flex;
+      flex-direction:column;
+      gap:18px;
+    }
+
+    .auth-actions a,
+    .auth-actions button{
+      width:100%;
+      padding:18px 24px;
+      border-radius:40px;
+      border:none;
+      font-weight:bold;
+      cursor:pointer;
+      transition:.3s;
+      font-size:18px;
+    }
+
+    .login-btn{
+      background:#000;
+      color:#fff;
+    }
+
+    .register-btn{
+      background:#f4f4f4;
+      color:#000;
+    }
+
+    .close-btn{
+      background:none;
+      color:#666;
+      font-weight:500;
+      padding:0;
+    }
+
+    .auth-actions button:hover,
+    .auth-actions a:hover{
+      transform:scale(1.02);
+    }
+
+    /* =========================
+       FOOTER
+    ========================== */
+
+    footer{
+      background:#111;
+      color:#fff;
+      padding:75px 45px;
+      margin-top:80px;
+    }
+
+    .footer-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:40px;
+    }
+
+    .footer-grid h4{
+      margin-bottom:20px;
+    }
+
+    .footer-grid a{
+      display:block;
+      margin-bottom:12px;
+      color:#ccc;
+    }
+
+    .footer-grid a:hover{
+      color:#fff;
+    }
+
+    /* =========================
+       RESPONSIVE
+    ========================== */
+
+    @media(max-width:900px){
+
+      .nav{
+        display:none;
+      }
+
+      .hero-content h1{
+        font-size:54px;
+        line-height:58px;
+      }
+
+      .category-grid{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+    @media(max-width:700px){
+
+      .section{
+        padding:60px 20px;
+      }
+
+      .header-container{
+        padding:0 20px;
+      }
+
+      .top-bar{
+        padding:0 20px;
+      }
+
+      .hero{
+        padding:40px 20px;
+        height:80vh;
+      }
+
+      .hero-content h1{
+        font-size:42px;
+        line-height:46px;
+      }
+
+      .product-card{
+        min-width:280px;
+      }
+
+      .footer-grid{
+        grid-template-columns:1fr;
+      }
+
+      .search-box input{
+        width:120px;
+      }
+
+      .category-btn,
+      .hero-btn{
+        width:100%;
+      }
+
+      .auth-box h2{
+        font-size:40px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+  <!-- TOP BAR -->
+
+  <div class="top-bar">
+
+    <div class="top-left">
+      <i class="fa-solid fa-shoe-prints"></i>
+      WINNER SHOES
+    </div>
+
+    <div class="top-links">
+      <a href="#">Ayuda</a>
+      <a href="#">Estado del pedido</a>
+      <a href="registro.html">Únete</a>
+      <a href="login.html">Iniciar sesión</a>
+    </div>
+
+  </div>
+
+  <!-- HEADER -->
+
+  <header class="header">
+
+    <div class="header-container">
+
+      <a href="index.html" class="logo">
+        WINNER
+      </a>
+
+      <nav class="nav">
+
+        <a href="novedades.html">Novedades</a>
+        <a href="hombre.html">Hombre</a>
+        <a href="mujer.html">Mujer</a>
+        <a href="ninos.html">Niños</a>
+        <a href="catalogo.html">Catálogo</a>
+        <a href="descuentos.html">Ofertas</a>
+
+      </nav>
+
+      <div class="tools">
+
+        <div class="search-box">
+          <i class="fa-solid fa-magnifying-glass"></i>
+
+          <input
+          type="text"
+          placeholder="Buscar">
+        </div>
+
+        <button class="icon-btn">
+          <i class="fa-regular fa-heart"></i>
+        </button>
+
+        <button class="icon-btn">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span class="cart-count">0</span>
+        </button>
+
+      </div>
+
+    </div>
+
+  </header>
+
+  <!-- HERO -->
+
+  <section class="hero">
+
+    <div class="hero-content">
+
+      <p>COLECCIÓN NIÑOS 2026</p>
+
+      <h1>
+        <span>DIVERSIÓN</span>
+        <span>EN CADA PASO</span>
+      </h1>
+
+      <button
+      class="hero-btn"
+      onclick="irCatalogo('ninos','')">
+        Comprar para niños
+      </button>
+
+    </div>
+
+  </section>
+
+  <!-- CATEGORÍAS -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      Explora por categoría
+    </h2>
+
+    <div class="category-grid">
+
+      <div class="category-card">
+
+        <img loading="lazy"
+        src="https://images.unsplash.com/photo-1514989940723-e8e51635b782?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="category-overlay">
+
+          <h3>Running Kids</h3>
+
+          <button
+          class="category-btn"
+          onclick="irCatalogo('ninos','running')">
+            Explorar Running Niños
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="category-card">
+
+        <img loading="lazy"
+        src="https://images.unsplash.com/photo-1517841905240-472988babdf9?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="category-overlay">
+
+          <h3>Lifestyle Kids</h3>
+
+          <button
+          class="category-btn"
+          onclick="irCatalogo('ninos','lifestyle')">
+            Explorar Lifestyle Niños
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="category-card">
+
+        <img loading="lazy"
+        src="https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="category-overlay">
+
+          <h3>Bebés e infantes</h3>
+
+          <button
+          class="category-btn"
+          onclick="irEtapa('bebes')">
+            Ver colección
+          </button>
+
+        </div>
+
+      </div>
+
+      <div class="category-card">
+
+        <img loading="lazy"
+        src="https://images.unsplash.com/photo-1519340241574-2cec6aef0c01?q=80&w=1200&auto=format&fit=crop">
+
+        <div class="category-overlay">
+
+          <h3>Niños escolares</h3>
+
+          <button
+          class="category-btn"
+          onclick="irEtapa('escolares')">
+            Ver colección
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- PRODUCTOS -->
+
+  <section class="section">
+
+    <h2 class="section-title">
+      Lo más nuevo para los más pequeños
+    </h2>
+
+    <div class="products-wrapper">
+
+      <!-- PRODUCTO 1 -->
+
+      <div class="product-card">
+
+        <div class="product-image">
+
+          <span class="badge">Novedad</span>
+
+          <div class="product-icons">
+
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop">
+
+        </div>
+
+        <div class="product-info">
+
+          <h3>Nike Kids Air</h3>
+          <p>Running Infantil</p>
+          <p class="price">$290.000</p>
+
+        </div>
+
+      </div>
+
+      <!-- PRODUCTOS 2-12 -->
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Escolar</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Adidas Mini Run</h3>
+          <p>Escolares</p>
+          <p class="price">$250.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Fácil de poner</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Puma Kids</h3>
+          <p>Bebés</p>
+          <p class="price">$210.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Novedad</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Jordan Junior</h3>
+          <p>Lifestyle Kids</p>
+          <p class="price">$360.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Escolar</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1543508282-6319a3e2621f?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Fila Jump</h3>
+          <p>Training Kids</p>
+          <p class="price">$240.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Fácil de poner</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1556906781-9a412961c28c?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Asics Tiny</h3>
+          <p>Bebés</p>
+          <p class="price">$220.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Novedad</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1600180758890-6b94519a8ba6?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>New Balance Kids</h3>
+          <p>Running Infantil</p>
+          <p class="price">$310.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Escolar</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1600269452121-4f2416e55c28?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Reebok Active Kids</h3>
+          <p>Escolares</p>
+          <p class="price">$260.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Novedad</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1511556532299-8f662fc26c06?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Under Armour Kids</h3>
+          <p>Sport Kids</p>
+          <p class="price">$280.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Fácil de poner</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1549298916-b41d501d3772?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Converse Play Kids</h3>
+          <p>Lifestyle</p>
+          <p class="price">$230.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Escolar</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Skechers Junior</h3>
+          <p>Running Kids</p>
+          <p class="price">$255.000</p>
+        </div>
+      </div>
+
+      <div class="product-card">
+        <div class="product-image">
+          <span class="badge">Novedad</span>
+
+          <div class="product-icons">
+            <button onclick="validarSesion()">
+              <i class="fa-regular fa-heart"></i>
+            </button>
+
+            <button onclick="validarSesion()">
+              <i class="fa-solid fa-bag-shopping"></i>
+            </button>
+          </div>
+
+          <img loading="lazy"
+          src="https://images.unsplash.com/photo-1491553895911-0055eca6402d?q=80&w=1200&auto=format&fit=crop">
+        </div>
+
+        <div class="product-info">
+          <h3>Jordan Kids Aura</h3>
+          <p>Basket Kids</p>
+          <p class="price">$390.000</p>
+        </div>
+      </div>
+
+    </div>
+
+  </section>
+
+  <!-- MODAL LOGIN -->
+
+  <div class="auth-modal" id="authModal">
+
+    <div class="auth-box">
+
+      <h2>
+        Inicia sesión
+      </h2>
+
+      <p>
+        Crea una cuenta para guardar los favoritos de tus hijos y gestionar tus compras.
+      </p>
+
+      <div class="auth-actions">
+
+        <a href="login.html" class="login-btn">
+          Iniciar sesión
+        </a>
+
+        <a href="registro.html" class="register-btn">
+          Registrarse
+        </a>
+
+        <button
+        class="close-btn"
+        onclick="cerrarModal()">
+          Continuar explorando
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-grid">
+
+      <div>
+        <h4>Niños</h4>
+        <a href="#">Running Kids</a>
+        <a href="#">Lifestyle Kids</a>
+        <a href="#">Escolares</a>
+      </div>
+
+      <div>
+        <h4>Ayuda</h4>
+        <a href="#">Pedidos</a>
+        <a href="#">Envíos</a>
+        <a href="#">Devoluciones</a>
+      </div>
+
+      <div>
+        <h4>Empresa</h4>
+        <a href="#">Acerca de</a>
+        <a href="#">Noticias</a>
+      </div>
+
+      <div>
+        <h4>Cuenta</h4>
+        <a href="login.html">Iniciar sesión</a>
+        <a href="registro.html">Registrarse</a>
+      </div>
+
+    </div>
+
+  </footer>
+
+  <script>
+
+    function irCatalogo(genero,categoria){
+
+      let url =
+      "catalogo.html?genero=" + genero;
+
+      if(categoria !== ""){
+
+        url += "&categoria=" + categoria;
+
+      }
+
+      window.location.href = url;
+
+    }
+
+    function irEtapa(etapa){
+
+      window.location.href =
+      "catalogo.html?genero=ninos&etapa=" + etapa;
+
+    }
+
+    function validarSesion(){
+
+      const usuario =
+      localStorage.getItem("usuario");
+
+      if(!usuario){
+
+        document.getElementById("authModal")
+        .style.display = "flex";
+
+      }else{
+
+        alert("Producto agregado correctamente");
+
+      }
+
+    }
+
+    function cerrarModal(){
+
+      document.getElementById("authModal")
+      .style.display = "none";
+
+    }
+
+    window.onclick = function(e){
+
+      const modal =
+      document.getElementById("authModal");
+
+      if(e.target === modal){
+
+        modal.style.display = "none";
+
+      }
+
+    }
+
+  </script>
+
+</body>
+</html>

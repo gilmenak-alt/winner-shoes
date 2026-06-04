@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Winner Shoes</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
+body{background:#fff;color:#111;overflow-x:hidden;}
+.top-bar{height:38px;background:#f5f5f5;display:flex;justify-content:space-between;align-items:center;padding:0 50px;font-size:13px;}
+.top-bar a{text-decoration:none;color:#111;margin-left:20px;}
+header{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #e5e5e5;}
+.navbar{height:80px;display:flex;align-items:center;justify-content:space-between;padding:0 50px;}
+.logo{font-size:34px;font-weight:900;letter-spacing:2px;text-decoration:none;color:#111;}
+.nav-menu{display:flex;gap:35px;}
+.nav-menu a{text-decoration:none;color:#111;font-size:17px;font-weight:600;position:relative;}
+.nav-menu a::after{content:'';position:absolute;left:0;bottom:-6px;width:0%;height:2px;background:#111;transition:.3s;}
+.nav-menu a:hover::after{width:100%;}
+.nav-icons{display:flex;align-items:center;gap:20px;}
+.search-box{background:#f5f5f5;border-radius:30px;padding:10px 18px;display:flex;align-items:center;gap:10px;}
+.search-box input{border:none;background:transparent;outline:none;width:180px;font-size:15px;}
+.icon-btn{border:none;background:none;font-size:22px;cursor:pointer;}
+.hero{height:88vh;background:url('https://images.unsplash.com/photo-1542291026-7eec264c27ff?q=80&w=1974&auto=format&fit=crop') center/cover no-repeat;display:flex;align-items:center;padding:0 80px;position:relative;}
+.hero::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.25);}
+.hero-content{position:relative;z-index:2;max-width:500px;color:#fff;}
+.hero-content p{font-size:18px;margin-bottom:20px;letter-spacing:2px;}
+.hero-content h1{font-size:90px;line-height:90px;font-weight:900;margin-bottom:30px;}
+.hero-content a{display:inline-block;padding:15px 35px;background:#fff;color:#111;text-decoration:none;border-radius:30px;font-weight:bold;transition:.3s;}
+.hero-content a:hover{background:#111;color:#fff;}
+.announcement{height:50px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;font-size:15px;font-weight:bold;}
+.section{padding:80px 60px;}
+.section-title{font-size:35px;font-weight:900;margin-bottom:40px;}
+.product-slider{display:flex;gap:25px;overflow-x:auto;scroll-behavior:smooth;padding-bottom:10px;}
+.product-slider::-webkit-scrollbar{display:none;}
+.product-card{min-width:320px;background:#fff;transition:.3s;cursor:pointer;}
+.product-card:hover{transform:translateY(-5px);}
+.product-image{height:350px;overflow:hidden;background:#f5f5f5;position:relative;}
+.product-image img{width:100%;height:100%;object-fit:cover;transition:.4s;}
+.product-card:hover img{transform:scale(1.06);}
+.product-info{padding:18px 0;}
+.product-info h3{font-size:20px;margin-bottom:8px;}
+.product-info p{color:#757575;margin-bottom:8px;}
+.product-info span{font-weight:bold;}
+.card-actions{display:flex;gap:10px;margin-top:12px;}
+.card-actions button{flex:1;border:none;padding:12px;border-radius:30px;cursor:pointer;font-weight:bold;font-size:14px;}
+.btn-cart{background:#000;color:#fff;}
+.btn-fav{background:#f1f1f1;}
+.category-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px;}
+.category-card{height:500px;position:relative;overflow:hidden;}
+.category-card img{width:100%;height:100%;object-fit:cover;transition:.4s;}
+.category-card:hover img{transform:scale(1.05);}
+.category-overlay{position:absolute;bottom:50px;left:40px;color:#fff;}
+.category-overlay h2{font-size:42px;margin-bottom:15px;}
+.category-overlay a{padding:12px 28px;background:#fff;color:#111;text-decoration:none;border-radius:30px;font-weight:bold;}
+.story-section{display:grid;grid-template-columns:1fr 1fr;gap:40px;padding:80px 60px;align-items:center;}
+.story-image img{width:100%;border-radius:10px;}
+.story-text h2{font-size:50px;margin-bottom:25px;}
+.story-text p{font-size:18px;line-height:32px;color:#555;margin-bottom:30px;}
+.story-text a{padding:14px 30px;background:#111;color:#fff;text-decoration:none;border-radius:30px;}
+footer{background:#111;color:#fff;padding:70px 60px;margin-top:70px;}
+.footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;}
+.footer-grid h4{margin-bottom:20px;}
+.footer-grid a{display:block;text-decoration:none;color:#cfcfcf;margin-bottom:12px;}
+.footer-bottom{margin-top:40px;border-top:1px solid #333;padding-top:20px;color:#999;}
+@media(max-width:1000px){.nav-menu{display:none;}.hero-content h1{font-size:60px;line-height:60px;}.category-grid{grid-template-columns:1fr;}.story-section{grid-template-columns:1fr;}.footer-grid{grid-template-columns:1fr 1fr;}}
+@media(max-width:700px){.navbar,.hero,.section,.story-section,footer{padding-left:20px;padding-right:20px;}.hero-content h1{font-size:45px;line-height:45px;}.search-box input{width:100px;}}
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div><i class="fa-solid fa-shoe-prints"></i></div>
+  <div id="topBarLinks">
+    <a href="registro.html">Únete</a>
+    <a href="login.html">Iniciar sesión</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">WINNER SHOES</a>
+    <nav class="nav-menu">
+      <a href="novedades.html">Novedades</a>
+      <a href="hombre.html">Hombre</a>
+      <a href="mujer.html">Mujer</a>
+      <a href="ninos.html">Niños</a>
+      <a href="deporte.html">Deporte</a>
+      <a href="descuentos.html">Descuentos</a>
+    </nav>
+    <div class="nav-icons">
+      <form class="search-box" id="searchForm" onsubmit="buscar(event)">
+        <i class="fa-solid fa-magnifying-glass" style="cursor:pointer;" onclick="buscar(event)"></i>
+        <input type="text" id="searchInput" placeholder="Buscar" onkeydown="if(event.key==='Enter')buscar(event)">
+      </form>
+      <button class="icon-btn" onclick="irFavoritos()" title="Favoritos"><i class="fa-regular fa-heart"></i></button>
+      <button class="icon-btn" onclick="irCarrito()" title="Carrito"><i class="fa-solid fa-bag-shopping"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-content">
+    <p>NUEVA COLECCIÓN 2026</p>
+    <h1>DEFINE<br>TU ESTILO</h1>
+    <a href="catalogo.html">Comprar ahora</a>
+  </div>
+</section>
+
+<!-- ANNOUNCEMENT -->
+<div class="announcement">ENVÍOS GRATIS · CUOTAS SIN INTERÉS · NUEVAS COLECCIONES</div>
+
+<!-- PRODUCTOS -->
+<section class="section">
+  <h2 class="section-title">Lo más nuevo</h2>
+  <div class="product-slider" id="productSlider">
+    <p style="color:#999;">Cargando productos...</p>
+  </div>
+</section>
+
+<!-- CATEGORÍAS -->
+<section class="section">
+  <div class="category-grid">
+    <div class="category-card">
+      <img src="https://img.freepik.com/foto-gratis/buen-deportista-motivado-escuchando-musica-auriculares-mientras-hace-ejercicios_8353-6836.jpg?w=740&q=80">
+      <div class="category-overlay"><h2>Hombre</h2><a href="hombre.html">Comprar</a></div>
+    </div>
+    <div class="category-card">
+      <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=800&q=80">
+      <div class="category-overlay"><h2>Mujer</h2><a href="mujer.html">Comprar</a></div>
+    </div>
+    <div class="category-card">
+      <img src="https://images.unsplash.com/photo-1503919005314-30d93d07d823?w=800&q=80">
+      <div class="category-overlay"><h2>Niños</h2><a href="ninos.html">Comprar</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- STORY -->
+<section class="story-section">
+  <div class="story-image">
+    <img src="https://images.unsplash.com/photo-1460353581641-37baddab0fa2?q=80&w=1200&auto=format&fit=crop">
+  </div>
+  <div class="story-text">
+    <h2>Explora el futuro del calzado</h2>
+    <p>Diseños premium inspirados en rendimiento, moda urbana y comodidad total. Encuentra modelos exclusivos para cada estilo y ocasión.</p>
+    <a href="catalogo.html">Explorar catálogo</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><h4>Productos</h4><a href="catalogo.html">Catálogo</a><a href="novedades.html">Novedades</a><a href="descuentos.html">Ofertas</a></div>
+    <div><h4>Ayuda</h4><a href="#">Estado del pedido</a><a href="#">Envíos</a><a href="#">Devoluciones</a></div>
+    <div><h4>Empresa</h4><a href="#">Acerca de</a><a href="#">Noticias</a><a href="#">Sostenibilidad</a></div>
+    <div><h4>Cuenta</h4><a href="login.html" id="footerLogin">Iniciar sesión</a><a href="registro.html">Registrarse</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 Winner Shoes</div>
+</footer>
+
+<script>
+// ── Sesión ──────────────────────────────────────────────
+async function cargarSesion() {
+  try {
+    const r = await fetch('/api/me', { credentials: 'same-origin' });
+    const d = await r.json();
+    if (d.user) {
+      const links = document.getElementById('topBarLinks');
+      links.innerHTML = `
+        <span style="font-weight:bold;">Hola, ${d.user.nombre.split(' ')[0]}</span>
+        <a href="${d.user.rol === 'admin' ? 'dashboard_admin.html' : 'dashboard_cliente.html'}" style="margin-left:20px;">Mi cuenta</a>
+        <a href="#" onclick="cerrarSesion(event)" style="margin-left:20px;">Salir</a>`;
+      const footerLogin = document.getElementById('footerLogin');
+      if (footerLogin) footerLogin.textContent = 'Mi cuenta', footerLogin.href = 'dashboard_cliente.html';
+    }
+  } catch(_) {}
+}
+
+async function cerrarSesion(e) {
+  e.preventDefault();
+  await fetch('/api/logout', { method: 'POST' });
+  window.location.reload();
+}
+
+// ── Favoritos y Carrito → requieren login ───────────────
+function irFavoritos() {
+  window.location.href = 'login.html?next=' + encodeURIComponent('dashboard_cliente.html');
+}
+
+function irCarrito() {
+  window.location.href = 'login.html?next=' + encodeURIComponent('dashboard_cliente.html');
+}
+
+// ── Búsqueda ────────────────────────────────────────────
+function buscar(e) {
+  e && e.preventDefault();
+  const q = document.getElementById('searchInput').value.trim();
+  if (q) {
+    window.location.href = 'catalogo.html?q=' + encodeURIComponent(q);
+  } else {
+    window.location.href = 'catalogo.html';
+  }
+}
+
+// ── Productos desde API ─────────────────────────────────
+const fmt = n => new Intl.NumberFormat('es-CO', { style:'currency', currency:'COP', maximumFractionDigits:0 }).format(Number(n)||0);
+
+async function cargarProductos() {
+  const slider = document.getElementById('productSlider');
+  try {
+    const r = await fetch('/api/productos');
+    const lista = await r.json();
+    if (!Array.isArray(lista) || !lista.length) {
+      slider.innerHTML = '<p style="color:#999;">No hay productos disponibles.</p>';
+      return;
+    }
+    slider.innerHTML = '';
+    lista.slice(0, 8).forEach(p => {
+      const venta = Number(p.precio_venta ?? p.precio_lista ?? p.precio);
+      const lista2 = Number(p.precio_lista ?? p.precio);
+      const pct = p.oferta_porcentaje ? Number(p.oferta_porcentaje) : null;
+      const precioHtml = pct && pct > 0 && venta < lista2
+        ? `<span style="text-decoration:line-through;color:#999;margin-right:6px;">${fmt(lista2)}</span><span style="color:#d60000;">${fmt(venta)}</span>`
+        : `<span>${fmt(venta)}</span>`;
+      const img = p.imagen || 'https://placehold.co/400x400?text=Sin+imagen';
+      const card = document.createElement('div');
+      card.className = 'product-card';
+      card.innerHTML = `
+        <div class="product-image">
+          <img src="${img}" alt="${p.nombre}" onerror="this.src='https://placehold.co/400x400?text=Sin+imagen'">
+        </div>
+        <div class="product-info">
+          <h3>${p.nombre}</h3>
+          <p>${p.categoria || ''}</p>
+          <p>${fmt(venta)}</p>
+          <div class="card-actions">
+            <button class="btn-fav" onclick="event.stopPropagation();irFavoritos()"><i class="fa-regular fa-heart"></i></button>
+            <button class="btn-cart" onclick="event.stopPropagation();irCarrito()">Añadir</button>
+          </div>
+        </div>`;
+      card.addEventListener('click', () => {
+        window.location.href = 'producto.html?id=' + p.id_producto;
+      });
+      slider.appendChild(card);
+    });
+  } catch(e) {
+    slider.innerHTML = '<p style="color:#999;">No se pudieron cargar los productos.</p>';
+  }
+}
+
+// ── Init ────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  cargarSesion();
+  cargarProductos();
+});
+</script>
+</body>
+</html>

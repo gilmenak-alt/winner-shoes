@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Deporte | Winner Shoes</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,Helvetica,sans-serif;}
+    body{background:#fff;color:#111;overflow-x:hidden;}
+    a{text-decoration:none;color:inherit;}
+    img{width:100%;display:block;}
+    button{cursor:pointer;border:none;transition:.3s;}
+
+    .top-bar{height:38px;background:#f5f5f5;display:flex;justify-content:space-between;align-items:center;padding:0 50px;font-size:13px;}
+    .top-bar a{color:#111;margin-left:20px;}
+    .top-links{display:flex;align-items:center;}
+
+    .header{position:sticky;top:0;z-index:999;background:#fff;border-bottom:1px solid #eee;}
+    .header-container{height:82px;padding:0 40px;display:flex;align-items:center;justify-content:space-between;}
+    .logo{font-size:30px;font-weight:900;letter-spacing:2px;}
+    .nav{display:flex;gap:35px;font-weight:600;}
+    .nav a{position:relative;padding-bottom:5px;}
+    .nav a::after{content:"";position:absolute;left:0;bottom:0;width:0;height:2px;background:#000;transition:.3s;}
+    .nav a:hover::after,.nav a.active::after{width:100%;}
+    .tools{display:flex;align-items:center;gap:18px;}
+    .search-box{background:#f5f5f5;border-radius:40px;padding:12px 18px;display:flex;align-items:center;gap:10px;}
+    .search-box input{border:none;outline:none;background:none;width:170px;font-size:15px;}
+    .icon-btn{background:none;font-size:20px;cursor:pointer;}
+
+    /* HERO */
+    .hero-deporte{height:55vh;background:url('https://images.unsplash.com/photo-1571731956672-f2b94d7dd0cb?q=80&w=1800&auto=format&fit=crop') center/cover no-repeat;display:flex;align-items:center;padding:0 80px;position:relative;}
+    .hero-deporte::before{content:'';position:absolute;inset:0;background:rgba(0,0,0,.45);}
+    .hero-content{position:relative;z-index:2;color:#fff;max-width:600px;}
+    .hero-content p{font-size:14px;letter-spacing:3px;margin-bottom:14px;text-transform:uppercase;}
+    .hero-content h1{font-size:72px;font-weight:900;line-height:1;margin-bottom:22px;}
+    .hero-content a{display:inline-block;padding:14px 32px;background:#fff;color:#111;border-radius:30px;font-weight:bold;transition:.3s;}
+    .hero-content a:hover{background:#111;color:#fff;}
+
+    /* CATEGORÍAS SPORT */
+    .cat-strip{display:flex;gap:14px;padding:40px 40px 0;overflow-x:auto;}
+    .cat-strip::-webkit-scrollbar{display:none;}
+    .cat-btn{padding:12px 26px;border:2px solid #111;border-radius:30px;font-size:15px;font-weight:600;background:#fff;white-space:nowrap;cursor:pointer;transition:.3s;}
+    .cat-btn:hover,.cat-btn.active{background:#111;color:#fff;}
+
+    /* TOOLBAR */
+    .page-head{padding:30px 40px 10px;}
+    .page-head h1{font-size:38px;font-weight:900;margin-bottom:8px;}
+    .page-head p{color:#666;font-size:16px;}
+    .toolbar{display:flex;justify-content:space-between;align-items:center;padding:20px 40px 30px;flex-wrap:wrap;gap:20px;}
+    .toolbar-left{display:flex;align-items:center;gap:20px;}
+    .toolbar-right{display:flex;gap:20px;}
+    .toolbar button,.toolbar select{border:1px solid #ddd;background:#fff;padding:12px 18px;border-radius:30px;cursor:pointer;font-size:15px;}
+
+    /* MAIN */
+    .main-layout{display:flex;gap:40px;padding:0 40px 60px;}
+    .sidebar{width:280px;flex-shrink:0;transition:.4s;}
+    .sidebar.hide{width:0;overflow:hidden;opacity:0;}
+    .filter-box{border-bottom:1px solid #e5e5e5;padding:20px 0;}
+    .filter-box h3{font-size:18px;margin-bottom:15px;}
+    .filter-option{display:flex;align-items:center;gap:10px;margin-bottom:12px;cursor:pointer;font-size:15px;}
+    .color-option{width:28px;height:28px;border-radius:50%;border:2px solid #ddd;cursor:pointer;transition:.2s;}
+    .color-option:hover{transform:scale(1.15);}
+
+    /* GRID */
+    .product-area{flex:1;}
+    .product-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:30px;}
+    .product-card{cursor:pointer;transition:.3s;}
+    .product-card:hover{transform:translateY(-4px);}
+    .product-image{position:relative;background:#f7f7f7;overflow:hidden;aspect-ratio:1/1;}
+    .product-image img{width:100%;height:100%;object-fit:cover;transition:.4s;position:absolute;top:0;left:0;}
+    .product-card:hover .img1{opacity:0;}
+    .badge{position:absolute;top:15px;left:15px;background:#fff;padding:6px 12px;font-size:12px;font-weight:bold;border-radius:20px;z-index:10;}
+    .badge-sport{background:#111;color:#fff;}
+    .product-info{padding:18px 5px;}
+    .product-info h3{font-size:18px;margin-bottom:8px;}
+    .product-info p{color:#757575;margin-bottom:6px;}
+    .price{color:#111!important;font-weight:bold;margin-top:10px;}
+    .price-old{text-decoration:line-through;color:#bbb;font-size:14px;}
+    .price-desc{color:#d60000;font-weight:bold;}
+    .card-actions{display:flex;gap:10px;margin-top:12px;}
+    .card-actions button{flex:1;border:none;padding:12px;border-radius:30px;cursor:pointer;font-weight:bold;font-size:14px;}
+    .btn-cart{background:#000;color:#fff;}
+    .btn-fav{background:#f1f1f1;}
+    .load-more{display:flex;justify-content:center;margin-top:50px;}
+    .load-more button{background:#000;color:#fff;border:none;padding:16px 40px;border-radius:40px;font-size:16px;cursor:pointer;}
+
+    /* MODAL */
+    .modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:9999;align-items:center;justify-content:center;}
+    .modal-content{background:#fff;border-radius:16px;padding:50px 40px;max-width:420px;width:90%;text-align:center;}
+    .modal-content h2{font-size:26px;margin-bottom:16px;}
+    .modal-content p{color:#666;margin-bottom:30px;line-height:1.6;}
+    .modal-buttons{display:flex;gap:14px;justify-content:center;margin-bottom:20px;}
+    .login-btn{background:#111;color:#fff;padding:14px 30px;border-radius:30px;font-size:15px;font-weight:bold;cursor:pointer;}
+    .register-btn{background:#f1f1f1;color:#111;padding:14px 30px;border-radius:30px;font-size:15px;font-weight:bold;cursor:pointer;}
+    .close-modal{background:none;border:none;color:#888;font-size:14px;cursor:pointer;text-decoration:underline;}
+
+    footer{background:#111;color:#fff;padding:60px 40px;margin-top:80px;}
+    .footer-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:40px;}
+    .footer-grid h4{margin-bottom:20px;}
+    .footer-grid a{display:block;margin-bottom:12px;color:#ccc;}
+    .footer-bottom{margin-top:40px;border-top:1px solid #333;padding-top:20px;color:#999;}
+
+    @media(max-width:1100px){.product-grid{grid-template-columns:repeat(2,1fr);}}
+    @media(max-width:700px){.nav{display:none;}.product-grid{grid-template-columns:1fr;}.main-layout,.toolbar,.cat-strip{padding-left:20px;padding-right:20px;}.hero-deporte{padding:0 30px;}.hero-content h1{font-size:48px;}}
+  </style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="top-bar">
+  <div><i class="fa-solid fa-shoe-prints"></i> WINNER SHOES</div>
+  <div class="top-links" id="topBarLinks">
+    <a href="registro.html">Únete</a>
+    <a href="login.html">Iniciar sesión</a>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header">
+  <div class="header-container">
+    <a href="index.html" class="logo">WINNER SHOES</a>
+    <nav class="nav">
+      <a href="novedades.html">Novedades</a>
+      <a href="hombre.html">Hombre</a>
+      <a href="mujer.html">Mujer</a>
+      <a href="ninos.html">Niños</a>
+      <a href="deporte.html" class="active">Deporte</a>
+      <a href="descuentos.html">Descuentos</a>
+    </nav>
+    <div class="tools">
+      <div class="search-box">
+        <i class="fa-solid fa-magnifying-glass" style="cursor:pointer;" onclick="buscar()"></i>
+        <input type="text" id="searchInput" placeholder="Buscar" onkeyup="aplicarFiltros()" onkeydown="if(event.key==='Enter')buscar()">
+      </div>
+      <button class="icon-btn" onclick="handleNavFav()" title="Favoritos"><i class="fa-regular fa-heart"></i></button>
+      <button class="icon-btn" onclick="handleNavCart()" title="Carrito"><i class="fa-solid fa-bag-shopping"></i></button>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero-deporte">
+  <div class="hero-content">
+    <p>Colección Performance 2026</p>
+    <h1>RENDIMIENTO<br>SIN LÍMITES</h1>
+    <a href="catalogo.html?categoria=deporte">Ver colección</a>
+  </div>
+</section>
+
+<!-- CATEGORÍAS SPORT -->
+<div class="cat-strip">
+  <button class="cat-btn active" onclick="filtrarDeporte('todos',this)">Todos</button>
+  <button class="cat-btn" onclick="filtrarDeporte('running',this)">Running</button>
+  <button class="cat-btn" onclick="filtrarDeporte('futbol',this)">Fútbol</button>
+  <button class="cat-btn" onclick="filtrarDeporte('basket',this)">Basketball</button>
+  <button class="cat-btn" onclick="filtrarDeporte('training',this)">Training</button>
+  <button class="cat-btn" onclick="filtrarDeporte('tenis',this)">Tenis</button>
+  <button class="cat-btn" onclick="filtrarDeporte('ciclismo',this)">Ciclismo</button>
+</div>
+
+<!-- PAGE HEAD -->
+<section class="page-head">
+  <h1>Calzado Deportivo</h1>
+  <p>Rendimiento y tecnología para cada deporte.</p>
+</section>
+
+<!-- TOOLBAR -->
+<section class="toolbar">
+  <div class="toolbar-left">
+    <strong id="totalProductos">0 Productos</strong>
+    <button id="toggleFilters"><i class="fa-solid fa-sliders"></i> Ocultar filtros</button>
+  </div>
+  <div class="toolbar-right">
+    <select id="ordenar" onchange="aplicarFiltros()">
+      <option value="default">Ordenar por</option>
+      <option value="menor">Precio: menor a mayor</option>
+      <option value="mayor">Precio: mayor a menor</option>
+    </select>
+  </div>
+</section>
+
+<!-- MAIN -->
+<main class="main-layout">
+  <aside class="sidebar" id="sidebar">
+    <div class="filter-box">
+      <h3>Marca</h3>
+      <label class="filter-option"><input type="radio" name="marca" value="Nike" onchange="aplicarFiltros()"> Nike</label>
+      <label class="filter-option"><input type="radio" name="marca" value="Adidas" onchange="aplicarFiltros()"> Adidas</label>
+      <label class="filter-option"><input type="radio" name="marca" value="Puma" onchange="aplicarFiltros()"> Puma</label>
+      <label class="filter-option"><input type="radio" name="marca" value="New Balance" onchange="aplicarFiltros()"> New Balance</label>
+      <label class="filter-option"><input type="radio" name="marca" value="Under Armour" onchange="aplicarFiltros()"> Under Armour</label>
+    </div>
+    <div class="filter-box">
+      <h3>Color</h3>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <div class="color-option" data-color="Negro" style="background:black;" title="Negro"></div>
+        <div class="color-option" data-color="Blanco" style="background:white;border-color:#ccc;" title="Blanco"></div>
+        <div class="color-option" data-color="Rojo" style="background:red;" title="Rojo"></div>
+        <div class="color-option" data-color="Azul" style="background:#1a56db;" title="Azul"></div>
+        <div class="color-option" data-color="Verde" style="background:#16a34a;" title="Verde"></div>
+        <div class="color-option" data-color="Naranja" style="background:#ea580c;" title="Naranja"></div>
+      </div>
+    </div>
+    <div class="filter-box">
+      <h3>Talla</h3>
+      <label class="filter-option"><input type="radio" name="talla" value="38" onchange="aplicarFiltros()"> 38</label>
+      <label class="filter-option"><input type="radio" name="talla" value="39" onchange="aplicarFiltros()"> 39</label>
+      <label class="filter-option"><input type="radio" name="talla" value="40" onchange="aplicarFiltros()"> 40</label>
+      <label class="filter-option"><input type="radio" name="talla" value="41" onchange="aplicarFiltros()"> 41</label>
+      <label class="filter-option"><input type="radio" name="talla" value="42" onchange="aplicarFiltros()"> 42</label>
+      <label class="filter-option"><input type="radio" name="talla" value="43" onchange="aplicarFiltros()"> 43</label>
+    </div>
+    <div class="filter-box">
+      <h3>Deporte</h3>
+      <label class="filter-option"><input type="radio" name="deporte_f" value="running" onchange="aplicarFiltros()"> Running</label>
+      <label class="filter-option"><input type="radio" name="deporte_f" value="futbol" onchange="aplicarFiltros()"> Fútbol</label>
+      <label class="filter-option"><input type="radio" name="deporte_f" value="basket" onchange="aplicarFiltros()"> Basketball</label>
+      <label class="filter-option"><input type="radio" name="deporte_f" value="training" onchange="aplicarFiltros()"> Training</label>
+    </div>
+  </aside>
+
+  <section class="product-area">
+    <div class="product-grid" id="productGrid"></div>
+    <div class="load-more"><button id="loadMore">Cargar más</button></div>
+  </section>
+</main>
+
+<!-- MODAL LOGIN -->
+<div class="modal" id="authModal">
+  <div class="modal-content">
+    <h2>Inicia sesión</h2>
+    <p>Debes iniciar sesión o registrarte para guardar favoritos y agregar productos al carrito.</p>
+    <div class="modal-buttons">
+      <button class="login-btn" onclick="window.location.href='login.html'">Iniciar sesión</button>
+      <button class="register-btn" onclick="window.location.href='registro.html'">Registrarse</button>
+    </div>
+    <button class="close-modal" onclick="closeModal()">Continuar explorando</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div><h4>Productos</h4><a href="catalogo.html">Catálogo</a><a href="novedades.html">Novedades</a><a href="descuentos.html">Ofertas</a></div>
+    <div><h4>Ayuda</h4><a href="#">Estado del pedido</a><a href="#">Envíos</a><a href="#">Devoluciones</a></div>
+    <div><h4>Empresa</h4><a href="#">Acerca de</a><a href="#">Noticias</a><a href="#">Sostenibilidad</a></div>
+    <div><h4>Cuenta</h4><a href="login.html" id="footerLogin">Iniciar sesión</a><a href="registro.html">Registrarse</a></div>
+  </div>
+  <div class="footer-bottom">© 2026 Winner Shoes</div>
+</footer>
+
+<script>
+// ── Datos de productos deportivos ──────────────────────────────────────────
+const marcas = ["Nike","Adidas","Puma","New Balance","Under Armour"];
+const colores = ["Negro","Blanco","Rojo","Azul","Verde","Naranja"];
+const deportes = ["running","futbol","basket","training","tenis","ciclismo"];
+const imgs = [
+  ["https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500","https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=501"],
+  ["https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=500","https://images.unsplash.com/photo-1600185365483-26d7a4cc7519?w=501"],
+  ["https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=500","https://images.unsplash.com/photo-1608231387042-66d1773070a5?w=501"],
+  ["https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=500","https://images.unsplash.com/photo-1491553895911-0055eca6402d?w=501"],
+  ["https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=500","https://images.unsplash.com/photo-1512374382149-233c42b6a83b?w=501"],
+  ["https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=500","https://images.unsplash.com/photo-1597045566677-8cf032ed6634?w=501"],
+];
+const nombresProd = [
+  "Air Zoom Pegasus","Ultraboost 24","Future Rider","Fresh Foam 1080","HOVR Phantom",
+  "Mercurial Veloce","Predator Edge","King Platinum","Furon V7","Hypervenom",
+  "Air Jordan 37","Dame 9","Stewie 2","BB550","Curry 11",
+  "Free Metcon 6","Dropset 2","Softride Enzo","FuelCell TC","UA HOVR Rise",
+  "Court Zoom NXT","Courtflash Speed","Serve & Stay","Barricade 13","SoleCourt Boost",
+  "Superstar 3D","Terrex Speed","Nitro Trail","Beacon v7","Sonic 6",
+];
+const precios = [280000,320000,250000,420000,380000,310000,290000,260000,450000,370000,
+                  400000,340000,280000,310000,390000,270000,300000,240000,360000,410000,
+                  330000,350000,290000,320000,440000,260000,380000,300000,340000,420000];
+
+const productos = [];
+for (let i = 0; i < 30; i++) {
+  const precio = precios[i];
+  const oferta = i % 5 === 0;
+  productos.push({
+    id: i + 1,
+    nombre: nombresProd[i],
+    marca: marcas[i % marcas.length],
+    color: colores[i % colores.length],
+    tallas: [38,39,40,41,42].slice(i%3, (i%3)+3),
+    precio,
+    precioDesc: oferta ? Math.round(precio * 0.8) : precio,
+    oferta,
+    deporte: deportes[i % deportes.length],
+    img1: imgs[i % imgs.length][0],
+    img2: imgs[i % imgs.length][1],
+  });
+}
+
+let visibles = 9;
+let filtroDeporte = 'todos';
+let colorSeleccionado = '';
+const fmt = n => new Intl.NumberFormat('es-CO',{style:'currency',currency:'COP',maximumFractionDigits:0}).format(Number(n)||0);
+
+function renderProductos(lista) {
+  const grid = document.getElementById('productGrid');
+  grid.innerHTML = '';
+  document.getElementById('totalProductos').innerText = lista.length + ' Productos';
+  lista.slice(0, visibles).forEach(p => {
+    const card = document.createElement('div');
+    card.className = 'product-card';
+    card.innerHTML = `
+      <div class="product-image">
+        <span class="badge ${p.oferta ? 'badge-sport' : ''}">${p.oferta ? 'Oferta' : 'Sport'}</span>
+        <img class="img1" src="${p.img1}" alt="${p.nombre}" onerror="this.src='https://placehold.co/500?text=${encodeURIComponent(p.nombre)}'">
+        <img src="${p.img2}" alt="${p.nombre}" onerror="this.src='https://placehold.co/500?text=${encodeURIComponent(p.nombre)}'">
+      </div>
+      <div class="product-info">
+        <h3>${p.nombre}</h3>
+        <p>${p.marca}</p>
+        <p>${p.color} · ${p.deporte.charAt(0).toUpperCase()+p.deporte.slice(1)}</p>
+        ${p.oferta ? `<p class="price-old">${fmt(p.precio)}</p><p class="price price-desc">${fmt(p.precioDesc)} <span style="font-size:12px;background:#d60000;color:#fff;padding:2px 8px;border-radius:10px;">-20%</span></p>` : `<p class="price">${fmt(p.precio)}</p>`}
+        <div class="card-actions">
+          <button class="btn-fav" onclick="event.stopPropagation();handleFav(${p.id},this)"><i class="fa-regular fa-heart"></i></button>
+          <button class="btn-cart" onclick="event.stopPropagation();irProducto(${p.id})">Comprar</button>
+        </div>
+      </div>`;
+    card.addEventListener('click', () => irProducto(p.id));
+    grid.appendChild(card);
+  });
+}
+
+function irProducto(id) {
+  window.location.href = 'producto.html?id=' + id;
+}
+
+function filtrarDeporte(deporte, btn) {
+  filtroDeporte = deporte;
+  document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  visibles = 9;
+  aplicarFiltros();
+}
+
+function aplicarFiltros() {
+  let lista = [...productos];
+  const marca = document.querySelector('input[name="marca"]:checked');
+  const talla = document.querySelector('input[name="talla"]:checked');
+  const deporteF = document.querySelector('input[name="deporte_f"]:checked');
+  const buscar = document.getElementById('searchInput').value.toLowerCase();
+  if (filtroDeporte !== 'todos') lista = lista.filter(p => p.deporte === filtroDeporte);
+  if (marca) lista = lista.filter(p => p.marca === marca.value);
+  if (talla) lista = lista.filter(p => p.tallas.includes(Number(talla.value)));
+  if (deporteF) lista = lista.filter(p => p.deporte === deporteF.value);
+  if (colorSeleccionado) lista = lista.filter(p => p.color === colorSeleccionado);
+  if (buscar) lista = lista.filter(p => p.nombre.toLowerCase().includes(buscar) || p.marca.toLowerCase().includes(buscar));
+  const ordenar = document.getElementById('ordenar').value;
+  if (ordenar === 'menor') lista.sort((a,b) => a.precioDesc - b.precioDesc);
+  if (ordenar === 'mayor') lista.sort((a,b) => b.precioDesc - a.precioDesc);
+  renderProductos(lista);
+}
+
+function buscar() {
+  const q = document.getElementById('searchInput').value.trim();
+  if (q) window.location.href = 'catalogo.html?q=' + encodeURIComponent(q);
+}
+
+// Modal
+const modal = document.getElementById('authModal');
+function openModal() { modal.style.display = 'flex'; }
+function closeModal() { modal.style.display = 'none'; }
+modal.addEventListener('click', e => { if(e.target===modal) closeModal(); });
+
+function handleFav(id, btn) {
+  if (!localStorage.getItem('usuario')) { openModal(); return; }
+  const favs = JSON.parse(localStorage.getItem('favoritos-cliente') || '[]');
+  if (!favs.includes(id)) {
+    favs.push(id);
+    localStorage.setItem('favoritos-cliente', JSON.stringify(favs));
+    if (btn) btn.innerHTML = '<i class="fa-solid fa-heart" style="color:#d60000"></i>';
+    mostrarToast('Guardado en favoritos ♥');
+  } else {
+    localStorage.setItem('favoritos-cliente', JSON.stringify(favs.filter(x => x !== id)));
+    if (btn) btn.innerHTML = '<i class="fa-regular fa-heart"></i>';
+    mostrarToast('Quitado de favoritos');
+  }
+}
+function handleNavFav() {
+  if (!localStorage.getItem('usuario')) { openModal(); return; }
+  window.location.href = 'dashboard_cliente.html#favoritos';
+}
+function handleNavCart() {
+  if (!localStorage.getItem('usuario')) { openModal(); return; }
+  window.location.href = 'dashboard_cliente.html';
+}
+function mostrarToast(msg) {
+  let t = document.getElementById('_toast');
+  if (!t) { t = document.createElement('div'); t.id = '_toast'; t.style.cssText = 'position:fixed;bottom:28px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:999px;background:#111;color:#fff;font-weight:bold;font-size:14px;z-index:9999999;transition:opacity .3s;'; document.body.appendChild(t); }
+  t.textContent = msg; t.style.opacity = '1';
+  clearTimeout(t._t); t._t = setTimeout(() => { t.style.opacity = '0'; }, 2500);
+}
+
+// Color options
+document.querySelectorAll('.color-option').forEach(c => {
+  c.addEventListener('click', () => {
+    colorSeleccionado = colorSeleccionado === c.dataset.color ? '' : c.dataset.color;
+    document.querySelectorAll('.color-option').forEach(x => x.style.outline='none');
+    if (colorSeleccionado) c.style.outline='3px solid #111';
+    aplicarFiltros();
+  });
+});
+
+// Toggles
+document.getElementById('toggleFilters').addEventListener('click', () => {
+  document.getElementById('sidebar').classList.toggle('hide');
+});
+document.getElementById('loadMore').addEventListener('click', () => {
+  visibles += 9; aplicarFiltros();
+});
+
+// Sesión
+async function cargarSesion() {
+  try {
+    const r = await fetch('/api/me', { credentials:'same-origin' });
+    const d = await r.json();
+    if (d.user) {
+      document.getElementById('topBarLinks').innerHTML = `
+        <span style="font-weight:bold;">Hola, ${d.user.nombre.split(' ')[0]}</span>
+        <a href="${d.user.rol==='admin'?'dashboard_admin.html':'dashboard_cliente.html'}" style="margin-left:20px;">Mi cuenta</a>
+        <a href="#" onclick="cerrarSesion(event)" style="margin-left:20px;">Salir</a>`;
+    }
+  } catch(_) {}
+}
+async function cerrarSesion(e) {
+  e.preventDefault();
+  await fetch('/api/logout', { method:'POST' });
+  window.location.reload();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  cargarSesion();
+  aplicarFiltros();
+});
+</script>
+</body>
+</html>
