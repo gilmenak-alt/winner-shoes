@@ -32,13 +32,20 @@ const uploadDev = multer({
 });
 
 app.use(express.json({ limit: '15mb' }));
+
+// Necesario para que las cookies secure funcionen detrás del proxy de Vercel
+app.set('trust proxy', 1);
+
+const pgStore = new pgSession({
+  pool: db.pool,
+  tableName: 'session',
+  createTableIfMissing: true,
+});
+pgStore.on('error', (e) => console.error('Session store error:', e.message));
+
 app.use(
   session({
-    store: new pgSession({
-      pool: db.pool,
-      tableName: 'session',
-      createTableIfMissing: true,
-    }),
+    store: pgStore,
     secret: process.env.SESSION_SECRET || 'calzado-dev-secret-cambiar',
     resave: false,
     saveUninitialized: false,
@@ -50,9 +57,6 @@ app.use(
     },
   })
 );
-
-// Necesario para que las cookies secure funcionen detrás del proxy de Vercel
-app.set('trust proxy', 1);
 app.use(express.static(path.join(__dirname, '../public')));
 
 function requireAuth(req, res, next) {
@@ -131,8 +135,18 @@ app.post('/api/login', async (req, res) => {
       redirect: user.rol === 'admin' ? '/dashboard_admin.html' : '/dashboard_cliente.html',
     });
   } catch (e) {
-    console.error(e);
-    res.status(500).json({ message: 'Error del servidor' });
+    console.error('LOGIN ERROR:', e);
+    res.status(500).json({ message: 'Error del servidor', detail: e.message });
+  }
+});
+
+/* ─── DIAGNÓSTICO (quitar en producción final) ─────────────────────────── */
+app.get('/api/health', async (_req, res) => {
+  try {
+    const [rows] = await db.query('SELECT current_database() AS db, NOW() AS ts');
+    res.json({ ok: true, db: rows[0]?.db, ts: rows[0]?.ts });
+  } catch (e) {
+    res.status(500).json({ ok: false, error: e.message, code: e.code });
   }
 });
 
