@@ -3,6 +3,7 @@ const fs = require('fs');
 const express = require('express');
 const path = require('path');
 const session = require('express-session');
+const pgSession = require('connect-pg-simple')(session);
 const bcrypt = require('bcryptjs');
 const multer = require('multer');
 const PDFDocument = require('pdfkit');
@@ -11,9 +12,13 @@ const db = require('./db');
 
 const app = express();
 const port = process.env.PORT || 3000;
+const isProd = process.env.NODE_ENV === 'production' || !!process.env.VERCEL;
 
-const uploadsDir = path.join(__dirname, '../public/uploads/devoluciones');
-if (!fs.existsSync(uploadsDir)) fs.mkdirSync(uploadsDir, { recursive: true });
+// En Vercel el filesystem es de solo lectura; usamos /tmp
+const uploadsDir = isProd
+  ? '/tmp/uploads/devoluciones'
+  : path.join(__dirname, '../public/uploads/devoluciones');
+try { fs.mkdirSync(uploadsDir, { recursive: true }); } catch (_) {}
 
 const uploadDev = multer({
   storage: multer.diskStorage({
@@ -29,13 +34,25 @@ const uploadDev = multer({
 app.use(express.json({ limit: '15mb' }));
 app.use(
   session({
+    store: new pgSession({
+      pool: db.pool,
+      tableName: 'session',
+      createTableIfMissing: true,
+    }),
     secret: process.env.SESSION_SECRET || 'calzado-dev-secret-cambiar',
     resave: false,
     saveUninitialized: false,
-    cookie: { httpOnly: true, maxAge: 86400000, sameSite: 'lax' },
+    cookie: {
+      httpOnly: true,
+      maxAge: 86400000,
+      sameSite: isProd ? 'none' : 'lax',
+      secure: isProd,
+    },
   })
 );
 
+// Necesario para que las cookies secure funcionen detrás del proxy de Vercel
+app.set('trust proxy', 1);
 app.use(express.static(path.join(__dirname, '../public')));
 
 function requireAuth(req, res, next) {
@@ -74,7 +91,7 @@ app.post('/api/registro', async (req, res) => {
     );
     res.json({ message: 'Usuario registrado correctamente' });
   } catch (e) {
-    if (e.code === 'ER_DUP_ENTRY') {
+    if (e.code === '23505' || e.code === 'ER_DUP_ENTRY') {
       return res.status(400).json({ message: 'El correo ya está registrado' });
     }
     console.error(e);
@@ -359,11 +376,11 @@ app.post('/api/pedidos', requireAuth, async (req, res) => {
       lineas.push({ id_producto: pid, cantidad: qty, precio_unitario: precioUnit, subtotal });
     }
 
-    const [pedidoIns] = await conn.query(
-      'INSERT INTO pedido (id_usuario, total, estado) VALUES (?, ?, ?)',
+    const [[pedidoIns]] = await conn.query(
+      'INSERT INTO pedido (id_usuario, total, estado) VALUES (?, ?, ?) RETURNING id_pedido',
       [userId, total, 'pendiente']
     );
-    const pedidoId = pedidoIns.insertId;
+    const pedidoId = pedidoIns.id_pedido;
 
     for (const L of lineas) {
       await conn.query(
@@ -498,12 +515,12 @@ app.post('/api/admin/productos', requireAdmin, async (req, res) => {
   const conn = await db.getConnection();
   try {
     await conn.beginTransaction();
-    const [r] = await conn.query(
+    const [[r]] = await conn.query(
       `INSERT INTO producto (nombre, descripcion, precio, id_categoria, id_marca, imagen, estado)
-       VALUES (?,?,?,?,?,?,TRUE)`,
+       VALUES (?,?,?,?,?,?,TRUE) RETURNING id_producto`,
       [nombre, descripcion || '', precio, id_categoria, id_marca, imagen || null]
     );
-    const pid = r.insertId;
+    const pid = r.id_producto;
     const stock = Math.max(0, parseInt(stock_inicial, 10) || 0);
     await conn.query(
       `INSERT INTO inventario (id_producto, cantidad, stock_minimo) VALUES (?,?,5)`,
@@ -647,11 +664,11 @@ app.post('/api/admin/proveedores', requireAdmin, async (req, res) => {
   const { nombre, telefono, correo, direccion } = req.body;
   if (!nombre) return res.status(400).json({ message: 'Nombre requerido' });
   try {
-    const [r] = await db.query(
-      'INSERT INTO proveedor (nombre, telefono, correo, direccion) VALUES (?,?,?,?)',
+    const [[r]] = await db.query(
+      'INSERT INTO proveedor (nombre, telefono, correo, direccion) VALUES (?,?,?,?) RETURNING id_proveedor',
       [nombre, telefono || null, correo || null, direccion || null]
     );
-    res.json({ id_proveedor: r.insertId });
+    res.json({ id_proveedor: r.id_proveedor });
   } catch (e) {
     res.status(500).json({ message: 'Error' });
   }
@@ -696,7 +713,7 @@ app.post('/api/admin/producto-proveedor', requireAdmin, async (req, res) => {
   const { id_producto, id_proveedor } = req.body;
   try {
     await db.query(
-      'INSERT IGNORE INTO producto_proveedor (id_producto, id_proveedor) VALUES (?,?)',
+      'INSERT INTO producto_proveedor (id_producto, id_proveedor) VALUES (?,?) ON CONFLICT DO NOTHING',
       [id_producto, id_proveedor]
     );
     res.json({ ok: true });
@@ -826,11 +843,11 @@ app.post('/api/admin/compra-proveedor', requireAdmin, async (req, res) => {
       total += sub;
       lineas.push({ pid, qty, punit, sub });
     }
-    const [ins] = await conn.query(
-      'INSERT INTO compra_proveedor (id_proveedor, total_compra, estado) VALUES (?,?,?)',
+    const [[ins]] = await conn.query(
+      'INSERT INTO compra_proveedor (id_proveedor, total_compra, estado) VALUES (?,?,?) RETURNING id_compra',
       [id_proveedor, total, 'solicitado']
     );
-    const idCompra = ins.insertId;
+    const idCompra = ins.id_compra;
     for (const L of lineas) {
       await conn.query(
         `INSERT INTO detalle_compra (id_compra, id_producto, cantidad, precio_compra_unitario, subtotal)
@@ -890,8 +907,11 @@ app.post('/api/admin/ofertas', requireAdmin, async (req, res) => {
     await db.query(
       `INSERT INTO oferta (id_producto, porcentaje, activo, fecha_inicio, fecha_fin)
        VALUES (?,?,?,?,?)
-       ON DUPLICATE KEY UPDATE porcentaje=VALUES(porcentaje), activo=VALUES(activo),
-       fecha_inicio=VALUES(fecha_inicio), fecha_fin=VALUES(fecha_fin)`,
+       ON CONFLICT (id_producto) DO UPDATE SET
+         porcentaje = EXCLUDED.porcentaje,
+         activo = EXCLUDED.activo,
+         fecha_inicio = EXCLUDED.fecha_inicio,
+         fecha_fin = EXCLUDED.fecha_fin`,
       [
         id_producto,
         porcentaje,
